@@ -1,0 +1,2 @@
+# Dict
+Common dictionary object
