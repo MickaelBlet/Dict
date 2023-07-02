@@ -955,9 +955,8 @@ class Dict {
         return _type;
     }
 
-
     /**
-     * @brief Get the Value object (unsafe)
+     * @brief Get the Value object (unsafe).
      *
      * @return UValue& Reference of value.
      */
@@ -966,7 +965,7 @@ class Dict {
     }
 
     /**
-     * @brief Get the Value object
+     * @brief Get the Value object.
      *
      * @return UValue& the read-only (constant) reference of value.
      */
@@ -4160,10 +4159,10 @@ class Dict {
             throw AccessException(*this, "is not a object");
         }
         object_t::const_iterator it = _value.getObject().find(key);
-        if (it != _value.getObject().end()) {
-            return it->second;
+        if (it == _value.getObject().end()) {
+            throw ChildException(*this, key);
         }
-        throw ChildException(*this, key);
+        return it->second;
     }
 
     /**
@@ -5546,8 +5545,7 @@ class Dict {
         return ret;
     }
 
-    private:
-
+  private:
     /**
      * @brief Create a Array.
      *

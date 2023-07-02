@@ -13,18 +13,18 @@ GTEST_TEST(dict_number, getNumber) {
     // is not Number
     {
         EXPECT_THROW(
-        {
-            try {
-                blet::Dict dict;
-                dict = false;
-                dict.getNumber();
-            }
-            catch (const blet::Dict::AccessException& e) {
-                EXPECT_STREQ(e.what(), "is not a number (is boolean).");
-                throw;
-            }
-        },
-        blet::Dict::AccessException);
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.getNumber();
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a number (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
     }
     // create new Number type
     {
@@ -38,19 +38,19 @@ GTEST_TEST(dict_number, getNumberConst) {
     // is not Number
     {
         EXPECT_THROW(
-        {
-            try {
-                blet::Dict dict;
-                dict = false;
-                const blet::Dict& cdict = dict;
-                cdict.getNumber();
-            }
-            catch (const blet::Dict::AccessException& e) {
-                EXPECT_STREQ(e.what(), "is not a number (is boolean).");
-                throw;
-            }
-        },
-        blet::Dict::AccessException);
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    const blet::Dict& cdict = dict;
+                    cdict.getNumber();
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a number (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
     }
     // create new Number type
     {
@@ -76,18 +76,40 @@ GTEST_TEST(dict_number, castOperator) {
 GTEST_TEST(dict_number, newNumber) {
     {
         EXPECT_THROW(
-        {
-            try {
-                blet::Dict dict;
-                dict = false;
-                dict.newNumber(42);
-            }
-            catch (const blet::Dict::AccessException& e) {
-                EXPECT_STREQ(e.what(), "is not a number (is boolean).");
-                throw;
-            }
-        },
-        blet::Dict::AccessException);
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.newNumber();
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a number (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict;
+        dict.newNumber();
+        int result;
+        result = dict;
+        EXPECT_EQ(result, 0);
+    }
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.newNumber(42);
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a number (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
     }
     {
         blet::Dict dict;

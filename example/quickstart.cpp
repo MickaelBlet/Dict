@@ -1,4 +1,5 @@
 #include <iostream>
+
 #include "blet/dict.h"
 
 int main(int, char**) {
@@ -19,7 +20,7 @@ int main(int, char**) {
     dict["foo"] = "bar";
     dict["array"][0] = "foo";
     dict["array"][1] = "bar";
-    dict["vector"] = vDouble;
+    dict["vector"].newArray(vDouble);
     dict["object"]["foo"] = "bar";
     dict["map_object"] = mStr;
     dict["boolean"] = true;
@@ -61,7 +62,8 @@ int main(int, char**) {
     std::cout << "  number: " << dict["self"]["number"] << '\n';
     std::cout << "  null: " << dict["self"]["null"] << '\n';
 
-    // dict.unsafe().getObject()["vector"].unsafe().getArray()[1].unsafe().getNumber() = -dict["vector"][1].unsafe().getNumber();
+    // dict.unsafe().getObject()["vector"].unsafe().getArray()[1].unsafe().getNumber() =
+    // -dict["vector"][1].unsafe().getNumber();
 
     std::cout << "vector: " << '\n';
     std::cout << "  1: " << dict["vector"][1] << '\n';
