@@ -1,5 +1,5 @@
-#include <string>
 #include <iostream>
+#include <string>
 
 struct A {
     int i;
@@ -9,9 +9,7 @@ struct A {
     }
 };
 
-struct B : public A {
-
-};
+struct B : public A {};
 
 struct C : public A {
     void to(const std::string& v) {
@@ -25,11 +23,9 @@ struct D : public A {
     }
 };
 
-struct E : public virtual B, public virtual C, public virtual D {
+struct E : public virtual B, public virtual C, public virtual D {};
 
-};
-
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     (void)argc;
     (void)argv;
     C e;

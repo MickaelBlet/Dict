@@ -13,18 +13,18 @@ GTEST_TEST(dict_boolean, getBoolean) {
     // is not boolean
     {
         EXPECT_THROW(
-        {
-            try {
-                blet::Dict dict;
-                dict = 0;
-                dict.getBoolean();
-            }
-            catch (const blet::Dict::AccessException& e) {
-                EXPECT_STREQ(e.what(), "is not a boolean (is number).");
-                throw;
-            }
-        },
-        blet::Dict::AccessException);
+            {
+                try {
+                    blet::Dict dict;
+                    dict = 0;
+                    dict.getBoolean();
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a boolean (is number).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
     }
     // create new boolean type
     {
@@ -38,19 +38,19 @@ GTEST_TEST(dict_boolean, getBooleanConst) {
     // is not boolean
     {
         EXPECT_THROW(
-        {
-            try {
-                blet::Dict dict;
-                dict = 0;
-                const blet::Dict& cdict = dict;
-                cdict.getBoolean();
-            }
-            catch (const blet::Dict::AccessException& e) {
-                EXPECT_STREQ(e.what(), "is not a boolean (is number).");
-                throw;
-            }
-        },
-        blet::Dict::AccessException);
+            {
+                try {
+                    blet::Dict dict;
+                    dict = 0;
+                    const blet::Dict& cdict = dict;
+                    cdict.getBoolean();
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a boolean (is number).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
     }
     // create new boolean type
     {
@@ -76,18 +76,40 @@ GTEST_TEST(dict_boolean, castOperator) {
 GTEST_TEST(dict_boolean, newBoolean) {
     {
         EXPECT_THROW(
-        {
-            try {
-                blet::Dict dict;
-                dict = 0;
-                dict.newBoolean(true);
-            }
-            catch (const blet::Dict::AccessException& e) {
-                EXPECT_STREQ(e.what(), "is not a boolean (is number).");
-                throw;
-            }
-        },
-        blet::Dict::AccessException);
+            {
+                try {
+                    blet::Dict dict;
+                    dict = 0;
+                    dict.newBoolean();
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a boolean (is number).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict;
+        dict.newBoolean();
+        bool result;
+        result = dict;
+        EXPECT_EQ(result, false);
+    }
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = 0;
+                    dict.newBoolean(true);
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a boolean (is number).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
     }
     {
         blet::Dict dict;

@@ -6,9 +6,11 @@ set(test_source_files
     "${CMAKE_CURRENT_SOURCE_DIR}/array.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/boolean.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/dict.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/exception.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/null.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/number.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/string.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/union.cpp"
 )
 
 if(BUILD_COVERAGE)
