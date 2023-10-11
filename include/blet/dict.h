@@ -422,10 +422,10 @@ class Dict {
          * @param value A map.
          */
         template<typename T>
-        void extendToObject(const std::map<std::string, T>& value) {
-            typename std::map<std::string, T>::const_iterator it;
+        void extendToObject(const std::map<object_t::key_type, T>& value) {
+            typename std::map<object_t::key_type, T>::const_iterator it;
             for (it = value.begin(); it != value.end(); ++it) {
-                _object->insert(std::pair<std::string, Dict>(it->first, it->second));
+                _object->insert(object_t::value_type(it->first, it->second));
             }
         }
 
@@ -2171,7 +2171,7 @@ class Dict {
      * @return std::size_t Index of start of first occurrence.
      * @throw AccessException if dict type is not a string.
      */
-    std::size_t find(const string_t& __str, std::size_t __pos = 0) const {
+    std::size_t string_find(const string_t& __str, std::size_t __pos = 0) const {
         return getString().find(__str, __pos);
     }
 
@@ -2187,7 +2187,7 @@ class Dict {
      * @return std::size_t Index of start of first occurrence.
      * @throw AccessException if dict type is not a string.
      */
-    std::size_t find(const char* __str, std::size_t __pos = 0) const {
+    std::size_t string_find(const char* __str, std::size_t __pos = 0) const {
         return getString().find(__str, __pos);
     }
 
@@ -4194,7 +4194,7 @@ class Dict {
      * @throw AccessException if dict type is not null and not a object.
      */
     template<typename T>
-    Dict& operator=(const std::map<std::string, T>& value) {
+    Dict& operator=(const std::map<object_t::key_type, T>& value) {
         newObject();
         _value.extendToObject(value);
         return *this;
@@ -4208,7 +4208,7 @@ class Dict {
      * @throw AccessException if dict type is not null and not a object.
      */
     template<typename T>
-    Dict& operator+=(const std::map<std::string, T>& value) {
+    Dict& operator+=(const std::map<object_t::key_type, T>& value) {
         createObject();
         _value.extendToObject(value);
         return *this;
@@ -4245,7 +4245,7 @@ class Dict {
      * @throw AccessException if dict type is not null and not a object.
      */
     template<typename T>
-    void newObject(const std::map<std::string, T>& value) {
+    void newObject(const std::map<object_t::key_type, T>& value) {
         newObject();
         _value.extendToObject(value);
     }
@@ -4265,7 +4265,7 @@ class Dict {
         if (it != _value.getObject().end()) {
             return it->second;
         }
-        return _value.getObject().insert(std::pair<std::string, Dict>(key, Dict())).first->second;
+        return _value.getObject().insert(object_t::value_type(key, Dict())).first->second;
     }
 
     /**
@@ -4471,7 +4471,7 @@ class Dict {
      * @throw AccessException if dict type is not null or not a object
      */
     template<std::size_t Size>
-    Dict& at(const char* (&key)[Size]) {
+    Dict& at(const char (&key)[Size]) {
         return getObject().at(key);
     }
 
@@ -4484,7 +4484,7 @@ class Dict {
      * @throw AccessException if dict type is not a object
      */
     template<std::size_t Size>
-    const Dict& at(const char* (&key)[Size]) const {
+    const Dict& at(const char (&key)[Size]) const {
         return getObject().at(key);
     }
 
@@ -4512,22 +4512,11 @@ class Dict {
     }
 
     /**
-     * @brief Finds the number of elements with given key.
-     * This function only makes sense for multimaps;
-     * for map the result will either be 0 (not present) or 1 (present).
-     *
-     * @param __x Key of (key, value) pairs to be located.
-     * @return std::size_t Number of elements with specified key.
-     */
-    std::size_t count(const std::string& __x) const {
-        return getObject().count(__x);
-    }
-
-    /**
      * @brief Return a read/write iterator that points one past the last pair in
      * the %map. Iteration is done in ascending order according to the keys.
      *
      * @return object_t::iterator
+     * @throw AccessException if dict type is not null or not a object
      */
     object_t::iterator object_end() {
         return getObject().end();
@@ -4539,39 +4528,10 @@ class Dict {
      * the keys.
      *
      * @return object_t::const_iterator
+     * @throw AccessException if dict type is not a object
      */
     object_t::const_iterator object_end() const {
         return getObject().end();
-    }
-
-    /**
-     * @brief Finds a subsequence matching given key.
-     * This function is equivalent to std::make_pair(c.lower_bound(val),
-     * c.upper_bound(val)) (but is faster than making the calls separately). This
-     * function probably only makes sense for multimaps.
-     *
-     * @param __x Key of (key, value) pairs to be located.
-     * @return std::pair<object_t::iterator, object_t::iterator>
-     * Pair of iterators that possibly points to the subsequence matching given
-     * key.
-     */
-    std::pair<object_t::iterator, object_t::iterator> equal_range(const std::string& __x) {
-        return getObject().equal_range(__x);
-    }
-
-    /**
-     * @brief Finds a subsequence matching given key.
-     * This function is equivalent to std::make_pair(c.lower_bound(val),
-     * c.upper_bound(val)) (but is faster than making the calls separately). This
-     * function probably only makes sense for multimaps.
-     *
-     * @param __x Key of (key, value) pairs to be located.
-     * @return std::pair<object_t::const_iterator, object_t::const_iterator>
-     * Pair of read-only (constant) iterators that possibly points to the
-     * subsequence matching given key.
-     */
-    std::pair<object_t::const_iterator, object_t::const_iterator> equal_range(const std::string& __x) const {
-        return getObject().equal_range(__x);
     }
 
     /**
@@ -4582,6 +4542,7 @@ class Dict {
      * way. Managing the pointer is the user's responsibility.
      *
      * @param __position An iterator pointing to the element to be erased.
+     * @throw AccessException if dict type is not null or not a object
      */
     void erase(object_t::iterator __position) {
         getObject().erase(__position);
@@ -4597,6 +4558,7 @@ class Dict {
      *
      * @param __x Key of element to be erased.
      * @return std::size_t The number of elements erased.
+     * @throw AccessException if dict type is not null or not a object
      */
     std::size_t erase(const std::string& __x) {
         return getObject().erase(__x);
@@ -4612,6 +4574,7 @@ class Dict {
      *
      * @param __first Iterator pointing to the start of the range to be erased.
      * @param __last Iterator pointing to the end of the range to be erased.
+     * @throw AccessException if dict type is not null or not a object
      */
     void erase(object_t::iterator __first, object_t::iterator __last) {
         getObject().erase(__first, __last);
@@ -4627,6 +4590,7 @@ class Dict {
      * @param __x Key of (key, value) %pair to be located.
      * @return object_t::iterator Iterator pointing to sought-after element, or
      * end() if not found.
+     * @throw AccessException if dict type is not null or not a object
      */
     object_t::iterator find(const std::string& __x) {
         return getObject().find(__x);
@@ -4642,6 +4606,7 @@ class Dict {
      * @param __x Key of (key, value) %pair to be located.
      * @return object_t::const_iterator Read-only (constant) iterator pointing to
      * sought-after element, or end() if not found.
+     * @throw AccessException if dict type is not a object
      */
     object_t::const_iterator find(const std::string& __x) const {
         return getObject().find(__x);
@@ -4649,6 +4614,7 @@ class Dict {
 
     /**
      * @brief Return copy of allocator used to construct this object.
+     * @throw AccessException if dict type is not a object
      */
     object_t::allocator_type object_get_allocator() const {
         return getObject().get_allocator();
@@ -4667,6 +4633,7 @@ class Dict {
      * of which the first element is an iterator that points to the possibly
      * inserted pair, and the second is a bool that is true if the pair was
      * actually inserted.
+     * @throw AccessException if dict type is not null or not a object
      */
     std::pair<object_t::iterator, bool> insert(const object_t::value_type& __x) {
         return getObject().insert(__x);
@@ -4693,6 +4660,7 @@ class Dict {
      * pairs).
      * @return object_t::iterator An iterator that points to the element with
      * key of @a __x (may or may not be the %pair passed in).
+     * @throw AccessException if dict type is not null or not a object
      */
     object_t::iterator insert(object_t::iterator __position, const object_t::value_type& __x) {
         return getObject().insert(__position, __x);
@@ -4704,7 +4672,7 @@ class Dict {
      *
      * @param __first Iterator pointing to the start of the range to be inserted.
      * @param __last Iterator pointing to the end of the range.
-     *
+     * @throw AccessException if dict type is not null or not a object
      */
     template<typename _InputIterator>
     void insert(_InputIterator __first, _InputIterator __last) {
@@ -4714,6 +4682,7 @@ class Dict {
     /**
      * @return object_t::key_compare key comparison object out of which the %map
      * was constructed.
+     * @throw AccessException if dict type is not a object
      */
     object_t::key_compare key_comp() const {
         return getObject().key_comp();
@@ -4729,6 +4698,7 @@ class Dict {
      * @param __x Key of (key, value) pair to be located.
      * @return object_t::iterator Iterator pointing to first element equal to or
      * greater than key, or end().
+     * @throw AccessException if dict type is not null or not a object
      */
     object_t::iterator lower_bound(const std::string& __x) {
         return getObject().lower_bound(__x);
@@ -4744,6 +4714,7 @@ class Dict {
      * @param __x Key of (key, value) pair to be located.
      * @return object_t::const_iterator Read-only (constant) iterator pointing to
      * first element equal to or greater than key, or end().
+     * @throw AccessException if dict type is not a object
      */
     object_t::const_iterator lower_bound(const std::string& __x) const {
         return getObject().lower_bound(__x);
@@ -4752,6 +4723,7 @@ class Dict {
     /**
      * @brief Returns a read/write reverse iterator that points to the last pair
      * in the %map. Iteration is done in descending order according to the keys.
+     * @throw AccessException if dict type is not null or not a object
      */
     object_t::reverse_iterator object_rbegin() {
         return getObject().rbegin();
@@ -4761,6 +4733,7 @@ class Dict {
      * @brief Returns a read-only (constant) reverse iterator that points to the
      * last pair in the %map. Iteration is done in descending order according to
      * the keys.
+     * @throw AccessException if dict type is not a object
      */
     object_t::const_reverse_iterator object_rbegin() const {
         return getObject().rbegin();
@@ -4770,6 +4743,7 @@ class Dict {
      * @brief Returns a read/write reverse iterator that points to one before the
      * first pair in the %map. Iteration is done in descending order according to
      * the keys.
+     * @throw AccessException if dict type is not null or not a object
      */
     object_t::reverse_iterator object_rend() {
         return getObject().rend();
@@ -4779,6 +4753,7 @@ class Dict {
      * @brief Returns a read-only (constant) reverse iterator that points
      * to one before the first pair in the %map.
      * Iteration is done in descending order according to the keys.
+     * @throw AccessException if dict type is not a object
      */
     object_t::const_reverse_iterator object_rend() const {
         return getObject().rend();
@@ -4790,6 +4765,7 @@ class Dict {
      * @param __x Key of (key, value) pair to be located.
      * @return object_t::iterator Iterator pointing to the first element greater
      * than key, or end().
+     * @throw AccessException if dict type is not null or not a object
      */
     object_t::iterator upper_bound(const std::string& __x) {
         return getObject().upper_bound(__x);
@@ -4801,6 +4777,7 @@ class Dict {
      * @param __x Key of (key, value) pair to be located.
      * @return object_t::const_iterator Read-only (constant) iterator pointing to
      * first iterator greater than key, or end().
+     * @throw AccessException if dict type is not a object
      */
     object_t::const_iterator upper_bound(const std::string& __x) const {
         return getObject().upper_bound(__x);
@@ -4809,6 +4786,7 @@ class Dict {
     /**
      * @brief Returns a value comparison object, built from the key comparison
      * object out of which the %map was constructed.
+     * @throw AccessException if dict type is not a object
      */
     object_t::value_compare value_comp() const {
         return getObject().value_comp();
@@ -4870,7 +4848,7 @@ class Dict {
                 }
             }
             else if (cit->isNumber() && pdict->isArray()) {
-                if (cit->_value.getNumber() <= pdict->_value.getArray().size()) {
+                if (cit->_value.getNumber() < pdict->_value.getArray().size()) {
                     pdict = &(pdict->_value.getArray().at(cit->_value.getNumber()));
                 }
                 else {
@@ -4908,7 +4886,7 @@ class Dict {
                 }
             }
             else if (pdict->isArray() && cit->isNumber()) {
-                if (cit->_value.getNumber() <= pdict->_value.getArray().size()) {
+                if (cit->_value.getNumber() < pdict->_value.getArray().size()) {
                     pdict = &pdict->_value.getArray().at(cit->_value.getNumber());
                 }
                 else {
@@ -5282,7 +5260,7 @@ class Dict {
             case STRING_TYPE:
             case ARRAY_TYPE:
             case OBJECT_TYPE:
-                throw MethodException(*this, "operator+");
+                throw MethodException(*this, "operator-");
                 break;
             case BOOLEAN_TYPE:
                 ret = -_value.getBoolean();
@@ -5496,22 +5474,27 @@ class Dict {
         return ret;
     }
 
-    // Dict operator~() const {
-    //     Dict ret;
-    //     switch (_type) {
-    //         case NULL_TYPE:
-    //         case ARRAY_TYPE:
-    //         case OBJECT_TYPE:
-    //         case STRING_TYPE:
-    //         case BOOLEAN_TYPE:
-    //             throw MethodException(*this, "operator~");
-    //             break;
-    //         case NUMBER_TYPE:
-    //             ret = ~static_cast<long>(_value.getNumber());
-    //             break;
-    //     }
-    //     return ret;
-    // }
+    /**
+     * @brief Use operator ~ if exist.
+     *
+     * @return Dict A new Dict.
+     */
+    Dict operator~() const {
+        Dict ret;
+        switch (_type) {
+            case NULL_TYPE:
+            case ARRAY_TYPE:
+            case OBJECT_TYPE:
+            case STRING_TYPE:
+            case BOOLEAN_TYPE:
+                throw MethodException(*this, "operator~");
+                break;
+            case NUMBER_TYPE:
+                ret = ~static_cast<long>(_value.getNumber());
+                break;
+        }
+        return ret;
+    }
 
     /**
      * @brief Use operator & if exist.
@@ -5534,7 +5517,7 @@ class Dict {
                 ret = _value.getBoolean() & value;
                 break;
             case NUMBER_TYPE:
-                ret = _value.getNumber() & value;
+                ret = static_cast<long>(_value.getNumber()) & value;
                 break;
         }
         return ret;
@@ -5561,7 +5544,7 @@ class Dict {
                 ret = _value.getBoolean() | value;
                 break;
             case NUMBER_TYPE:
-                ret = _value.getNumber() | value;
+                ret = static_cast<long>(_value.getNumber()) | value;
                 break;
         }
         return ret;
@@ -5588,7 +5571,7 @@ class Dict {
                 ret = _value.getBoolean() ^ value;
                 break;
             case NUMBER_TYPE:
-                ret = _value.getNumber() ^ value;
+                ret = static_cast<long>(_value.getNumber()) ^ value;
                 break;
         }
         return ret;
@@ -5696,7 +5679,7 @@ class Dict {
         std::map<T, U> ret;
         if (isArray()) {
             for (std::size_t i = 0; i < _value.getArray().size(); ++i) {
-                ret.insert(std::pair<T, U>(i, (*_value._array)[i]));
+                ret.insert(std::pair<T, U>(i, _value.getArray()[i]));
             }
         }
         return ret;
@@ -5763,12 +5746,12 @@ class Dict {
         switch (_type) {
             case ARRAY_TYPE:
                 for (std::size_t i = 0; i < _value.getArray().size(); ++i) {
-                    ret.insert(_value.getArray()[i]);
+                    ret.push(_value.getArray()[i]);
                 }
                 break;
             case OBJECT_TYPE:
                 for (object_t::const_iterator it = _value.getObject().begin(); it != _value.getObject().end(); ++it) {
-                    ret.insert(it->second);
+                    ret.push(it->second);
                 }
                 break;
             default:

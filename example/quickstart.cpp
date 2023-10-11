@@ -61,11 +61,4 @@ int main(int, char**) {
     std::cout << "  boolean: " << dict["self"]["boolean"] << '\n';
     std::cout << "  number: " << dict["self"]["number"] << '\n';
     std::cout << "  null: " << dict["self"]["null"] << '\n';
-
-    // dict.unsafe().getObject()["vector"].unsafe().getArray()[1].unsafe().getNumber() =
-    // -dict["vector"][1].unsafe().getNumber();
-
-    std::cout << "vector: " << '\n';
-    std::cout << "  1: " << dict["vector"][1] << '\n';
-    std::cout << "  1: " << (dict["vector"][1] == 0.42) << '\n';
 }

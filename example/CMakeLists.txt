@@ -1,4 +1,4 @@
-set(library_project_name dict)
+set(library_project_name "${PROJECT_NAME}")
 
 get_target_property(library_include_dirs "${library_project_name}" INTERFACE_INCLUDE_DIRECTORIES)
 
@@ -8,8 +8,8 @@ set(example_files
 
 foreach(file ${example_files})
     get_filename_component(filenamewe "${file}" NAME_WE)
-    add_executable("${filenamewe}.example" "${file}")
-    set_target_properties("${filenamewe}.example"
+    add_executable("${filenamewe}.${library_project_name}.example" "${file}")
+    set_target_properties("${filenamewe}.${library_project_name}.example"
         PROPERTIES
             CXX_STANDARD "${CMAKE_CXX_STANDARD}"
             CXX_STANDARD_REQUIRED ON
