@@ -950,7 +950,7 @@ GTEST_TEST(dict_string, find2) {
                 try {
                     blet::Dict dict;
                     dict = false;
-                    dict.find(std::string("foo"), 0);
+                    dict.string_find(std::string("foo"), 0);
                 }
                 catch (const blet::Dict::AccessException& e) {
                     EXPECT_STREQ(e.what(), "is not a string (is boolean).");
@@ -961,11 +961,11 @@ GTEST_TEST(dict_string, find2) {
     }
     {
         blet::Dict dict("foo");
-        EXPECT_EQ(dict.find(std::string("foo"), 0), 0);
+        EXPECT_EQ(dict.string_find(std::string("foo"), 0), 0);
     }
     {
         blet::Dict dict("foo");
-        EXPECT_EQ(dict.find(std::string("bar"), 0), blet::Dict::string_t::npos);
+        EXPECT_EQ(dict.string_find(std::string("bar"), 0), blet::Dict::string_t::npos);
     }
 }
 
@@ -976,7 +976,7 @@ GTEST_TEST(dict_string, find3) {
                 try {
                     blet::Dict dict;
                     dict = false;
-                    dict.find("foo", 0);
+                    dict.string_find("foo", 0);
                 }
                 catch (const blet::Dict::AccessException& e) {
                     EXPECT_STREQ(e.what(), "is not a string (is boolean).");
@@ -987,11 +987,11 @@ GTEST_TEST(dict_string, find3) {
     }
     {
         blet::Dict dict("foo");
-        EXPECT_EQ(dict.find("foo", 0), 0);
+        EXPECT_EQ(dict.string_find("foo", 0), 0);
     }
     {
         blet::Dict dict("foo");
-        EXPECT_EQ(dict.find("bar", 0), blet::Dict::string_t::npos);
+        EXPECT_EQ(dict.string_find("bar", 0), blet::Dict::string_t::npos);
     }
 }
 
@@ -1457,5 +1457,991 @@ GTEST_TEST(dict_string, string_get_allocator) {
         blet::Dict dict("foo");
         blet::Dict::string_t::allocator_type type = dict.string_get_allocator();
         (void)type;
+    }
+}
+
+GTEST_TEST(dict_string, insert1) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.insert(dict.getValue().getString().begin(), 1, 'o');
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict.insert(dict.string_begin(), 1, 'o');
+        EXPECT_EQ(dict, "ofoo");
+    }
+}
+
+GTEST_TEST(dict_string, insert2) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.insert(dict.getValue().getString().begin(), dict.getValue().getString().begin(),
+                                dict.getValue().getString().end());
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        std::string str("bar");
+        dict.insert(dict.string_begin(), str.begin(), str.end());
+        EXPECT_EQ(dict, "barfoo");
+    }
+}
+
+GTEST_TEST(dict_string, insert3) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.insert(0, std::string("foo"));
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict.insert(0, std::string("bar"));
+        EXPECT_EQ(dict, "barfoo");
+    }
+}
+
+GTEST_TEST(dict_string, insert4) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.insert(0, std::string("foo"), 1);
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict.insert(0, std::string("bar"), 1, 1);
+        EXPECT_EQ(dict, "afoo");
+    }
+}
+
+GTEST_TEST(dict_string, insert5) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.insert(0, "foo", 1);
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict.insert(0, "bar", 3);
+        EXPECT_EQ(dict, "barfoo");
+    }
+}
+
+GTEST_TEST(dict_string, insert6) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.insert(0, "foo");
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict.insert(0, "bar");
+        EXPECT_EQ(dict, "barfoo");
+    }
+}
+
+GTEST_TEST(dict_string, insert7) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.insert(0, 3, 'o');
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict.insert(0, 3, 'b');
+        EXPECT_EQ(dict, "bbbfoo");
+    }
+}
+
+GTEST_TEST(dict_string, insert8) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.insert(dict.getValue().getString().begin(), 'o');
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict.insert(dict.string_begin(), 'b');
+        EXPECT_EQ(dict, "bfoo");
+    }
+}
+
+GTEST_TEST(dict_string, length) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.length();
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_EQ(dict.length(), 3);
+    }
+}
+
+GTEST_TEST(dict_string, operatorAddEqual1) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict += std::string("nop");
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict += std::string("bar");
+        EXPECT_EQ(dict, "foobar");
+    }
+}
+
+GTEST_TEST(dict_string, operatorAddEqual2) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict += "nop";
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict += "bar";
+        EXPECT_EQ(dict, "foobar");
+    }
+}
+
+GTEST_TEST(dict_string, operatorAddEqual3) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict += 'n';
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict += 'b';
+        EXPECT_EQ(dict, "foob");
+    }
+}
+
+GTEST_TEST(dict_string, string_push_back) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.string_push_back('n');
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict.string_push_back('b');
+        EXPECT_EQ(dict, "foob");
+    }
+}
+
+GTEST_TEST(dict_string, string_rbegin) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.string_rbegin();
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_EQ(*dict.string_rbegin(), 'o');
+    }
+    {
+        const blet::Dict dict("foo");
+        EXPECT_EQ(*dict.string_rbegin(), 'o');
+    }
+}
+
+GTEST_TEST(dict_string, string_rend) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.string_rend();
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_EQ(*(dict.string_rend() - 1), 'f');
+    }
+    {
+        const blet::Dict dict("foo");
+        EXPECT_EQ(*(dict.string_rend() - 1), 'f');
+    }
+}
+
+GTEST_TEST(dict_string, replace1) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.replace(0, 1, std::string("bar"));
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict.replace(0, 1, std::string("bar"));
+        EXPECT_EQ(dict, "baroo");
+    }
+}
+
+GTEST_TEST(dict_string, replace2) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.replace(0, 1, std::string("bar"), 0, 1);
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict.replace(0, 1, std::string("bar"), 0, 1);
+        EXPECT_EQ(dict, "boo");
+    }
+}
+
+GTEST_TEST(dict_string, replace3) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.replace(0, 1, "bar", 1);
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict.replace(0, 1, "bar", 1);
+        EXPECT_EQ(dict, "boo");
+    }
+}
+
+GTEST_TEST(dict_string, replace4) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.replace(0, 1, "bar");
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict.replace(0, 1, "bar");
+        EXPECT_EQ(dict, "baroo");
+    }
+}
+
+GTEST_TEST(dict_string, replace5) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.replace(0, 1, 1, 'b');
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict.replace(0, 1, 2, 'b');
+        EXPECT_EQ(dict, "bboo");
+    }
+}
+
+GTEST_TEST(dict_string, replace6) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.replace(dict.getValue().getString().begin(), dict.getValue().getString().end(),
+                                 std::string("bar"));
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict.replace(dict.getString().begin(), dict.getString().end(), std::string("bar"));
+        EXPECT_EQ(dict, "bar");
+    }
+}
+
+GTEST_TEST(dict_string, replace7) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.replace(dict.getValue().getString().begin(), dict.getValue().getString().end(), "bar", 1);
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict.replace(dict.getString().begin(), dict.getString().end(), "bar", 1);
+        EXPECT_EQ(dict, "b");
+    }
+}
+
+GTEST_TEST(dict_string, replace8) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.replace(dict.getValue().getString().begin(), dict.getValue().getString().end(), "bar");
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict.replace(dict.getString().begin(), dict.getString().end(), "bar");
+        EXPECT_EQ(dict, "bar");
+    }
+}
+
+GTEST_TEST(dict_string, replace9) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.replace(dict.getValue().getString().begin(), dict.getValue().getString().end(), 2, 'b');
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict.replace(dict.getString().begin(), dict.getString().end(), 2, 'b');
+        EXPECT_EQ(dict, "bb");
+    }
+}
+
+GTEST_TEST(dict_string, replace10) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    std::string str("bar");
+                    dict.replace<std::string::iterator>(str.begin(), str.begin() + 1, str.begin(), str.begin() + 1);
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        std::string str("bar");
+        dict.replace<std::string::iterator>(dict.getString().begin(), dict.getString().end(), str.begin(),
+                                            str.begin() + 1);
+        EXPECT_EQ(dict, "b");
+    }
+}
+
+GTEST_TEST(dict_string, replace11) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    std::string strg("foo");
+                    const char* str("bar");
+                    dict.replace(strg.begin(), strg.begin() + 1, str, str + 1);
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        const char* str("bar");
+        dict.replace(dict.getString().begin(), dict.getString().end(), (char*)str, (char*)str + 1);
+        EXPECT_EQ(dict, "b");
+    }
+    {
+        blet::Dict dict("foo");
+        const char* str("bar");
+        dict.replace(dict.getString().begin(), dict.getString().end(), str, str + 1);
+        EXPECT_EQ(dict, "b");
+    }
+}
+
+GTEST_TEST(dict_string, replace12) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    blet::Dict dict2("foo");
+                    dict.replace(dict2.string_begin(), dict2.string_begin() + 1, dict2.string_begin(),
+                                 dict2.string_begin() + 1);
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        blet::Dict dict2("bar");
+        dict.replace(dict.string_begin(), dict.string_begin() + 1, dict2.string_begin(), dict2.string_begin() + 1);
+        EXPECT_EQ(dict, "boo");
+    }
+    {
+        blet::Dict dict("foo");
+        const blet::Dict dict2("bar");
+        dict.replace(dict.string_begin(), dict.string_begin() + 1, dict2.string_begin(), dict2.string_begin() + 1);
+        EXPECT_EQ(dict, "boo");
+    }
+}
+
+GTEST_TEST(dict_string, resize) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.resize(42, 'o');
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        dict.resize(6, 'o');
+        EXPECT_EQ(dict, "fooooo");
+    }
+}
+
+GTEST_TEST(dict_string, rfind1) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.rfind(std::string("foo"));
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_EQ(dict.rfind(std::string("foo")), 0);
+    }
+}
+
+GTEST_TEST(dict_string, rfind2) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.rfind("foo", 0, 3);
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_EQ(dict.rfind("foo", 0, 3), 0);
+    }
+}
+
+GTEST_TEST(dict_string, rfind3) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.rfind("foo", 0);
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_EQ(dict.rfind("foo"), 0);
+    }
+}
+
+GTEST_TEST(dict_string, rfind4) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.rfind('f', 0);
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_EQ(dict.rfind('o'), 2);
+        EXPECT_EQ(dict.rfind('o', 1), 1);
+    }
+}
+
+GTEST_TEST(dict_string, substr) {
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict = false;
+                    dict.substr();
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "is not a string (is boolean).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_EQ(dict.substr(1, 1), "o");
+    }
+}
+
+GTEST_TEST(dict_string, operatorEqualEqual) {
+    {
+        blet::Dict dict(false);
+        EXPECT_FALSE(dict == std::string("foo"));
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_TRUE(dict == std::string("foo"));
+        EXPECT_FALSE(dict == std::string("bar"));
+    }
+    {
+        blet::Dict dict(false);
+        EXPECT_FALSE(dict == "foo");
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_TRUE(dict == "foo");
+        EXPECT_FALSE(dict == "bar");
+    }
+    {
+        char str[] = "foo";
+        blet::Dict dict(false);
+        EXPECT_FALSE(dict == str);
+    }
+    {
+        char str[] = "foo";
+        char strf[] = "bar";
+        blet::Dict dict("foo");
+        EXPECT_TRUE(dict == str);
+        EXPECT_FALSE(dict == strf);
+    }
+}
+
+GTEST_TEST(dict_string, operatorNotEqual) {
+    {
+        blet::Dict dict(false);
+        EXPECT_TRUE(dict != std::string("foo"));
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_FALSE(dict != std::string("foo"));
+        EXPECT_TRUE(dict != std::string("bar"));
+    }
+    {
+        blet::Dict dict(false);
+        EXPECT_TRUE(dict != "foo");
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_FALSE(dict != "foo");
+        EXPECT_TRUE(dict != "bar");
+    }
+    {
+        char str[] = "foo";
+        blet::Dict dict(false);
+        EXPECT_TRUE(dict != str);
+    }
+    {
+        char str[] = "foo";
+        char strf[] = "bar";
+        blet::Dict dict("foo");
+        EXPECT_FALSE(dict != str);
+        EXPECT_TRUE(dict != strf);
+    }
+}
+
+GTEST_TEST(dict_string, operatorGreaterThan) {
+    {
+        blet::Dict dict(false);
+        EXPECT_FALSE(dict > std::string("foo"));
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_TRUE(dict > std::string("fo"));
+        EXPECT_FALSE(dict > std::string("gar"));
+    }
+    {
+        blet::Dict dict(false);
+        EXPECT_FALSE(dict > "foo");
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_TRUE(dict > "fo");
+        EXPECT_FALSE(dict > "gar");
+    }
+    {
+        char str[] = "foo";
+        blet::Dict dict(false);
+        EXPECT_FALSE(dict > str);
+    }
+    {
+        char str[] = "fo";
+        char strf[] = "gar";
+        blet::Dict dict("foo");
+        EXPECT_TRUE(dict > str);
+        EXPECT_FALSE(dict > strf);
+    }
+}
+
+GTEST_TEST(dict_string, operatorLessThan) {
+    {
+        blet::Dict dict(false);
+        EXPECT_FALSE(dict < std::string("foo"));
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_FALSE(dict < std::string("fo"));
+        EXPECT_TRUE(dict < std::string("gar"));
+    }
+    {
+        blet::Dict dict(false);
+        EXPECT_FALSE(dict < "foo");
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_FALSE(dict < "fo");
+        EXPECT_TRUE(dict < "gar");
+    }
+    {
+        char str[] = "foo";
+        blet::Dict dict(false);
+        EXPECT_FALSE(dict < str);
+    }
+    {
+        char str[] = "fo";
+        char strf[] = "gar";
+        blet::Dict dict("foo");
+        EXPECT_FALSE(dict < str);
+        EXPECT_TRUE(dict < strf);
+    }
+}
+
+GTEST_TEST(dict_string, operatorGreaterThanEqual) {
+    {
+        blet::Dict dict(false);
+        EXPECT_FALSE(dict >= std::string("foo"));
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_TRUE(dict >= std::string("fo"));
+        EXPECT_TRUE(dict >= std::string("foo"));
+        EXPECT_FALSE(dict >= std::string("gar"));
+    }
+    {
+        blet::Dict dict(false);
+        EXPECT_FALSE(dict >= "foo");
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_TRUE(dict >= "fo");
+        EXPECT_TRUE(dict >= "foo");
+        EXPECT_FALSE(dict >= "gar");
+    }
+    {
+        char str[] = "foo";
+        blet::Dict dict(false);
+        EXPECT_FALSE(dict >= str);
+    }
+    {
+        char str[] = "foo";
+        char strf[] = "gar";
+        blet::Dict dict("foo");
+        EXPECT_TRUE(dict >= str);
+        EXPECT_FALSE(dict >= strf);
+    }
+}
+
+GTEST_TEST(dict_string, operatorLessThanEqual) {
+    {
+        blet::Dict dict(false);
+        EXPECT_FALSE(dict <= std::string("foo"));
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_FALSE(dict <= std::string("fo"));
+        EXPECT_TRUE(dict <= std::string("foo"));
+        EXPECT_TRUE(dict <= std::string("gar"));
+    }
+    {
+        blet::Dict dict(false);
+        EXPECT_FALSE(dict <= "foo");
+    }
+    {
+        blet::Dict dict("foo");
+        EXPECT_FALSE(dict <= "fo");
+        EXPECT_TRUE(dict <= "foo");
+        EXPECT_TRUE(dict <= "gar");
+    }
+    {
+        char str[] = "foo";
+        blet::Dict dict(false);
+        EXPECT_FALSE(dict <= str);
+    }
+    {
+        char str[] = "foo";
+        char strf[] = "gar";
+        blet::Dict dict("foo");
+        EXPECT_TRUE(dict <= str);
+        EXPECT_TRUE(dict <= strf);
     }
 }

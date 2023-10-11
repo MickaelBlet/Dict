@@ -99,3 +99,16 @@ std::cout << "  null: " << dict["self"]["null"] << '\n';
 //   number: 24
 //   null: null
 ```
+
+## Build
+
+```bash
+# Interface
+mkdir build; pushd build; cmake .. && make install; popd
+
+# Install with custom directory
+mkdir build; pushd build; cmake -DCMAKE_INSTALL_PREFIX="YOUR_INSTALL_PATH" .. && make install; popd
+
+# Example + Tests + Coverage
+mkdir build; pushd build; cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_EXAMPLE=1 -DBUILD_TESTING=1 -DBUILD_COVERAGE=1 -DCMAKE_CXX_STANDARD=98 .. && make -j && make test -j; popd
+```
