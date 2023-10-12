@@ -5721,12 +5721,12 @@ class Dict {
         switch (_type) {
             case ARRAY_TYPE:
                 for (std::size_t i = 0; i < _value.getArray().size(); ++i) {
-                    ret.insert(_value.getArray()[i]);
+                    ret.insert(static_cast<T>(_value.getArray()[i]));
                 }
                 break;
             case OBJECT_TYPE:
                 for (object_t::const_iterator it = _value.getObject().begin(); it != _value.getObject().end(); ++it) {
-                    ret.insert(it->second);
+                    ret.insert(static_cast<T>(it->second));
                 }
                 break;
             default:
