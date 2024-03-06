@@ -23,8 +23,8 @@
  * SOFTWARE.
  */
 
-#ifndef _BLET_DICT_H_
-#define _BLET_DICT_H_
+#ifndef BLETDICT_H__
+#define BLETDICT_H__
 
 #include <deque>     // std::deque
 #include <exception> // std::exception
@@ -78,51 +78,51 @@ class Dict {
      */
     union UValue {
       private:
-        boolean_t _boolean;
-        number_t _number;
-        string_t* _string;
-        array_t* _array;
-        object_t* _object;
+        boolean_t boolean_;
+        number_t number_;
+        string_t* string_;
+        array_t* array_;
+        object_t* object_;
 
       public:
         /**
          * @brief Construct a new UValue with boolean at false.
          */
         UValue() :
-            _boolean(false) {}
+            boolean_(false) {}
         /**
          * @brief Construct a new UValue with a boolean.
          */
         UValue(const boolean_t& value) :
-            _boolean(value) {}
+            boolean_(value) {}
         /**
          * @brief Construct a new UValue with a number.
          */
         template<typename T>
         UValue(const T& value) :
-            _number(value) {}
+            number_(value) {}
         /**
          * @brief Construct a new UValue with a string.
          */
         UValue(const std::string& value) :
-            _string(new string_t(value)) {}
+            string_(new string_t(value)) {}
         /**
          * @brief Construct a new UValue with a string.
          */
         UValue(const char* value) :
-            _string(new string_t(value)) {}
+            string_(new string_t(value)) {}
         /**
          * @brief Construct a new UValue with a string.
          */
         template<std::size_t Size>
         UValue(const char (&value)[Size]) :
-            _string(new string_t(value)) {}
+            string_(new string_t(value)) {}
         /**
          * @brief Construct a new UValue with a array.
          */
         template<typename T>
         UValue(const std::deque<T>& value) :
-            _array(new array_t()) {
+            array_(new array_t()) {
             extendToArray(value);
         }
         /**
@@ -130,7 +130,7 @@ class Dict {
          */
         template<typename T>
         UValue(const std::list<T>& value) :
-            _array(new array_t()) {
+            array_(new array_t()) {
             extendToArray(value);
         }
         /**
@@ -138,7 +138,7 @@ class Dict {
          */
         template<typename T, typename U>
         UValue(const std::map<T, U>& value) :
-            _array(new array_t()) {
+            array_(new array_t()) {
             extendToArray(value);
         }
         /**
@@ -146,7 +146,7 @@ class Dict {
          */
         template<typename T>
         UValue(const std::queue<T>& value) :
-            _array(new array_t()) {
+            array_(new array_t()) {
             extendToArray(value);
         }
         /**
@@ -154,7 +154,7 @@ class Dict {
          */
         template<typename T>
         UValue(const std::set<T>& value) :
-            _array(new array_t()) {
+            array_(new array_t()) {
             extendToArray(value);
         }
         /**
@@ -162,7 +162,7 @@ class Dict {
          */
         template<typename T>
         UValue(const std::stack<T>& value) :
-            _array(new array_t()) {
+            array_(new array_t()) {
             extendToArray(value);
         }
         /**
@@ -170,7 +170,7 @@ class Dict {
          */
         template<typename T>
         UValue(const std::vector<T>& value) :
-            _array(new array_t()) {
+            array_(new array_t()) {
             extendToArray(value);
         }
         /**
@@ -178,7 +178,7 @@ class Dict {
          */
         template<typename T>
         UValue(const std::map<std::string, T>& value) :
-            _object(new object_t()) {
+            object_(new object_t()) {
             extendToObject(value);
         }
 
@@ -186,70 +186,70 @@ class Dict {
          * @brief Return boolean_t& Reference of boolean.
          */
         boolean_t& getBoolean() {
-            return _boolean;
+            return boolean_;
         }
 
         /**
          * @brief Return const boolean_t& Const reference of boolean.
          */
         const boolean_t& getBoolean() const {
-            return _boolean;
+            return boolean_;
         }
 
         /**
          * @brief Return number_t& Reference of number.
          */
         number_t& getNumber() {
-            return _number;
+            return number_;
         }
 
         /**
          * @brief Return const number_t& Const reference of number.
          */
         const number_t& getNumber() const {
-            return _number;
+            return number_;
         }
 
         /**
          * @brief Return reference of string.
          */
         string_t& getString() {
-            return *_string;
+            return *string_;
         }
 
         /**
          * @brief Return the read-only (constant) reference of string.
          */
         const string_t& getString() const {
-            return *_string;
+            return *string_;
         }
 
         /**
          * @brief Return reference of array.
          */
         array_t& getArray() {
-            return *_array;
+            return *array_;
         }
 
         /**
          * @brief Return the read-only (constant) reference of array.
          */
         const array_t& getArray() const {
-            return *_array;
+            return *array_;
         }
 
         /**
          * @brief Return reference of object.
          */
         object_t& getObject() {
-            return *_object;
+            return *object_;
         }
 
         /**
          * @brief Return the read-only (constant) reference of object.
          */
         const object_t& getObject() const {
-            return *_object;
+            return *object_;
         }
 
         /**
@@ -259,7 +259,7 @@ class Dict {
          * @param value Source string to use.
          */
         void newString(const string_t& value = string_t()) {
-            _string = new string_t(value);
+            string_ = new string_t(value);
         }
 
         /**
@@ -269,7 +269,7 @@ class Dict {
          * @param value Source array to use.
          */
         void newArray(const array_t& value = array_t()) {
-            _array = new array_t(value);
+            array_ = new array_t(value);
         }
 
         /**
@@ -279,7 +279,7 @@ class Dict {
          * @param value Source object to use.
          */
         void newObject(const object_t& value = object_t()) {
-            _object = new object_t(value);
+            object_ = new object_t(value);
         }
 
         /**
@@ -290,13 +290,13 @@ class Dict {
          */
         template<typename T>
         void extendToArray(const std::deque<T>& value) {
-            std::size_t size = _array->size() + value.size();
-            if (_array->capacity() < size) {
-                _array->reserve(size);
+            std::size_t size = array_->size() + value.size();
+            if (array_->capacity() < size) {
+                array_->reserve(size);
             }
             typename std::deque<T>::const_iterator it;
             for (it = value.begin(); it != value.end(); ++it) {
-                _array->push_back(*it);
+                array_->push_back(*it);
             }
         }
 
@@ -308,13 +308,13 @@ class Dict {
          */
         template<typename T>
         void extendToArray(const std::list<T>& value) {
-            std::size_t size = _array->size() + value.size();
-            if (_array->capacity() < size) {
-                _array->reserve(size);
+            std::size_t size = array_->size() + value.size();
+            if (array_->capacity() < size) {
+                array_->reserve(size);
             }
             typename std::list<T>::const_iterator it;
             for (it = value.begin(); it != value.end(); ++it) {
-                _array->push_back(*it);
+                array_->push_back(*it);
             }
         }
 
@@ -329,14 +329,14 @@ class Dict {
         void extendToArray(const std::map<T, U>& value) {
             typename std::map<T, U>::const_iterator it;
             for (it = value.begin(); it != value.end(); ++it) {
-                if (static_cast<std::size_t>(it->first) < _array->size()) {
-                    _array->operator[](static_cast<std::size_t>(it->first)) = it->second;
+                if (static_cast<std::size_t>(it->first) < array_->size()) {
+                    array_->operator[](static_cast<std::size_t>(it->first)) = it->second;
                     continue;
                 }
-                while (_array->size() < static_cast<std::size_t>(it->first)) {
-                    _array->push_back(Dict());
+                while (array_->size() < static_cast<std::size_t>(it->first)) {
+                    array_->push_back(Dict());
                 }
-                _array->push_back(it->second);
+                array_->push_back(it->second);
             }
         }
 
@@ -348,13 +348,13 @@ class Dict {
          */
         template<typename T>
         void extendToArray(const std::queue<T>& value) {
-            std::size_t size = _array->size() + value.size();
-            if (_array->capacity() < size) {
-                _array->reserve(size);
+            std::size_t size = array_->size() + value.size();
+            if (array_->capacity() < size) {
+                array_->reserve(size);
             }
             std::queue<T> copy = value;
             while (!copy.empty()) {
-                _array->push_back(copy.front());
+                array_->push_back(copy.front());
                 copy.pop();
             }
         }
@@ -367,13 +367,13 @@ class Dict {
          */
         template<typename T>
         void extendToArray(const std::set<T>& value) {
-            std::size_t size = _array->size() + value.size();
-            if (_array->capacity() < size) {
-                _array->reserve(size);
+            std::size_t size = array_->size() + value.size();
+            if (array_->capacity() < size) {
+                array_->reserve(size);
             }
             typename std::set<T>::const_iterator it;
             for (it = value.begin(); it != value.end(); ++it) {
-                _array->push_back(*it);
+                array_->push_back(*it);
             }
         }
 
@@ -385,13 +385,13 @@ class Dict {
          */
         template<typename T>
         void extendToArray(const std::stack<T>& value) {
-            std::size_t size = _array->size() + value.size();
-            if (_array->capacity() < size) {
-                _array->reserve(size);
+            std::size_t size = array_->size() + value.size();
+            if (array_->capacity() < size) {
+                array_->reserve(size);
             }
             std::stack<T> copy = value;
             while (!copy.empty()) {
-                _array->push_back(copy.top());
+                array_->push_back(copy.top());
                 copy.pop();
             }
         }
@@ -404,13 +404,13 @@ class Dict {
          */
         template<typename T>
         void extendToArray(const std::vector<T>& value) {
-            std::size_t size = _array->size() + value.size();
-            if (_array->capacity() < size) {
-                _array->reserve(size);
+            std::size_t size = array_->size() + value.size();
+            if (array_->capacity() < size) {
+                array_->reserve(size);
             }
             typename std::vector<T>::const_iterator it;
             for (it = value.begin(); it != value.end(); ++it) {
-                _array->push_back(*it);
+                array_->push_back(*it);
             }
         }
 
@@ -425,7 +425,7 @@ class Dict {
         void extendToObject(const std::map<object_t::key_type, T>& value) {
             typename std::map<object_t::key_type, T>::const_iterator it;
             for (it = value.begin(); it != value.end(); ++it) {
-                _object->insert(object_t::value_type(it->first, it->second));
+                object_->insert(object_t::value_type(it->first, it->second));
             }
         }
 
@@ -433,27 +433,27 @@ class Dict {
          * @brief Delete String.
          */
         void delString() {
-            delete _string;
+            delete string_;
         }
 
         /**
          * @brief Delete Array.
          */
         void delArray() {
-            delete _array;
+            delete array_;
         }
 
         /**
          * @brief Delete Object.
          */
         void delObject() {
-            delete _object;
+            delete object_;
         }
     };
 
   protected:
-    EType _type;
-    UValue _value;
+    EType type_;
+    UValue value_;
 
   public:
     // -------------------------------------------------------------------------
@@ -479,7 +479,7 @@ class Dict {
          */
         Exception(const std::string& message) :
             std::exception(),
-            _message(message) {}
+            message_(message) {}
         /**
          * @brief Destroy the Exception object.
          */
@@ -489,11 +489,11 @@ class Dict {
          * the current error.
          */
         const char* what() const throw() {
-            return _message.c_str();
+            return message_.c_str();
         }
 
       protected:
-        std::string _message;
+        std::string message_;
     };
 
     /**
@@ -509,7 +509,7 @@ class Dict {
          */
         AccessException(const Dict& dict, const std::string& message) :
             Exception(message + " (is " + Dict::typeToStr(dict.getType()) + ")."),
-            _dict(dict) {}
+            dict_(dict) {}
 
         /**
          * @brief Destroy the Access Exception object.
@@ -520,11 +520,11 @@ class Dict {
          * @brief Return the read-only (constant) reference dictionnary object.
          */
         const Dict& dict() const throw() {
-            return _dict;
+            return dict_;
         }
 
       protected:
-        const Dict& _dict;
+        const Dict& dict_;
     };
 
     /**
@@ -540,11 +540,11 @@ class Dict {
          */
         ChildException(const Dict& dict, unsigned long index) :
             AccessException(dict, ""),
-            _index(index),
-            _key() {
+            index_(index),
+            key_() {
             std::ostringstream oss("");
             oss << index << " has out of range.";
-            _message = oss.str();
+            message_ = oss.str();
         }
 
         /**
@@ -555,11 +555,11 @@ class Dict {
          */
         ChildException(const Dict& dict, const std::string& key) :
             AccessException(dict, ""),
-            _index(0),
-            _key(key) {
+            index_(0),
+            key_(key) {
             std::ostringstream oss("");
             oss << key << " has not a key.";
-            _message = oss.str();
+            message_ = oss.str();
         }
 
         /**
@@ -571,19 +571,19 @@ class Dict {
          * @brief Return the read-only (constant) reference key.
          */
         const std::string& key() const throw() {
-            return _key;
+            return key_;
         }
 
         /**
          * @brief Return the read-only (constant) reference index.
          */
         const unsigned long& index() const throw() {
-            return _index;
+            return index_;
         }
 
       protected:
-        unsigned long _index;
-        std::string _key;
+        unsigned long index_;
+        std::string key_;
     };
 
     /**
@@ -599,10 +599,10 @@ class Dict {
          */
         MethodException(const Dict& dict, const std::string& methodName) :
             AccessException(dict, ""),
-            _methodName(methodName) {
+            methodName_(methodName) {
             std::ostringstream oss("");
-            oss << "has not a method " << _methodName << ".";
-            _message = oss.str();
+            oss << "has not a method " << methodName_ << ".";
+            message_ = oss.str();
         }
 
         /**
@@ -614,11 +614,11 @@ class Dict {
          * @brief Return the read-only (constant) reference methodName.
          */
         const std::string& methodName() const throw() {
-            return _methodName;
+            return methodName_;
         }
 
       protected:
-        std::string _methodName;
+        std::string methodName_;
     };
 
     // -------------------------------------------------------------------------
@@ -707,18 +707,18 @@ class Dict {
      * @return std::ostream& Reference to the output stream.
      */
     friend std::ostream& operator<<(std::ostream& os, const Dict& dict) {
-        switch (dict._type) {
+        switch (dict.type_) {
             case Dict::NULL_TYPE:
                 os << "null";
                 break;
             case Dict::BOOLEAN_TYPE:
-                os << dict._value.getBoolean();
+                os << dict.value_.getBoolean();
                 break;
             case Dict::NUMBER_TYPE:
-                os << dict._value.getNumber();
+                os << dict.value_.getNumber();
                 break;
             case Dict::STRING_TYPE:
-                os << dict._value.getString();
+                os << dict.value_.getString();
                 break;
             case Dict::ARRAY_TYPE:
                 os << "<array " << &dict << ">";
@@ -744,8 +744,8 @@ class Dict {
      * @brief Construct a new null Dict.
      */
     Dict() :
-        _type(NULL_TYPE),
-        _value() {}
+        type_(NULL_TYPE),
+        value_() {}
 
     /**
      * @brief Construct a new object Dict.
@@ -753,21 +753,21 @@ class Dict {
      * @param rhs Source dictionnary.
      */
     Dict(const Dict& rhs) :
-        _type(rhs._type) {
-        switch (_type) {
+        type_(rhs.type_) {
+        switch (type_) {
             case NULL_TYPE:
             case BOOLEAN_TYPE:
             case NUMBER_TYPE:
-                _value = rhs._value;
+                value_ = rhs.value_;
                 break;
             case STRING_TYPE:
-                _value.newString(rhs._value.getString());
+                value_.newString(rhs.value_.getString());
                 break;
             case ARRAY_TYPE:
-                _value.newArray(rhs._value.getArray());
+                value_.newArray(rhs.value_.getArray());
                 break;
             case OBJECT_TYPE:
-                _value.newObject(rhs._value.getObject());
+                value_.newObject(rhs.value_.getObject());
                 break;
         }
     }
@@ -778,8 +778,8 @@ class Dict {
      * @param value Source boolean.
      */
     Dict(const boolean_t& value) :
-        _type(BOOLEAN_TYPE),
-        _value(value) {}
+        type_(BOOLEAN_TYPE),
+        value_(value) {}
 
     /**
      * @brief Construct a new number Dict.
@@ -789,8 +789,8 @@ class Dict {
      */
     template<typename T>
     Dict(const T& value) :
-        _type(NUMBER_TYPE),
-        _value(value) {}
+        type_(NUMBER_TYPE),
+        value_(value) {}
 
     /**
      * @brief Construct a new string Dict.
@@ -798,8 +798,8 @@ class Dict {
      * @param value Source string.
      */
     Dict(const std::string& value) :
-        _type(STRING_TYPE),
-        _value(value) {}
+        type_(STRING_TYPE),
+        value_(value) {}
 
     /**
      * @brief Construct a new string Dict.
@@ -807,8 +807,8 @@ class Dict {
      * @param value Source C string.
      */
     Dict(const char* value) :
-        _type(STRING_TYPE),
-        _value(value) {}
+        type_(STRING_TYPE),
+        value_(value) {}
 
     /**
      * @brief Construct a new string Dict.
@@ -817,8 +817,8 @@ class Dict {
      */
     template<std::size_t Size>
     Dict(const char (&value)[Size]) :
-        _type(STRING_TYPE),
-        _value(value) {}
+        type_(STRING_TYPE),
+        value_(value) {}
 
     /**
      * @brief Construct a new array Dict.
@@ -828,8 +828,8 @@ class Dict {
      */
     template<typename T>
     Dict(const std::deque<T>& value) :
-        _type(ARRAY_TYPE),
-        _value(value) {}
+        type_(ARRAY_TYPE),
+        value_(value) {}
 
     /**
      * @brief Construct a new array Dict.
@@ -839,8 +839,8 @@ class Dict {
      */
     template<typename T>
     Dict(const std::list<T>& value) :
-        _type(ARRAY_TYPE),
-        _value(value) {}
+        type_(ARRAY_TYPE),
+        value_(value) {}
 
     /**
      * @brief Construct a new array Dict.
@@ -851,8 +851,8 @@ class Dict {
      */
     template<typename T, typename U>
     Dict(const std::map<T, U>& value) :
-        _type(ARRAY_TYPE),
-        _value(value) {}
+        type_(ARRAY_TYPE),
+        value_(value) {}
 
     /**
      * @brief Construct a new array Dict.
@@ -862,8 +862,8 @@ class Dict {
      */
     template<typename T>
     Dict(const std::queue<T>& value) :
-        _type(ARRAY_TYPE),
-        _value(value) {}
+        type_(ARRAY_TYPE),
+        value_(value) {}
 
     /**
      * @brief Construct a new array Dict.
@@ -873,8 +873,8 @@ class Dict {
      */
     template<typename T>
     Dict(const std::set<T>& value) :
-        _type(ARRAY_TYPE),
-        _value(value) {}
+        type_(ARRAY_TYPE),
+        value_(value) {}
 
     /**
      * @brief Construct a new array Dict.
@@ -884,8 +884,8 @@ class Dict {
      */
     template<typename T>
     Dict(const std::stack<T>& value) :
-        _type(ARRAY_TYPE),
-        _value(value) {}
+        type_(ARRAY_TYPE),
+        value_(value) {}
 
     /**
      * @brief Construct a new array Dict.
@@ -895,8 +895,8 @@ class Dict {
      */
     template<typename T>
     Dict(const std::vector<T>& value) :
-        _type(ARRAY_TYPE),
-        _value(value) {}
+        type_(ARRAY_TYPE),
+        value_(value) {}
 
     /**
      * @brief Construct a new object Dict.
@@ -906,26 +906,26 @@ class Dict {
      */
     template<typename T>
     Dict(const std::map<std::string, T>& value) :
-        _type(OBJECT_TYPE),
-        _value(value) {}
+        type_(OBJECT_TYPE),
+        value_(value) {}
 
     /**
      * @brief Destroy the Dict object.
      */
     ~Dict() {
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case BOOLEAN_TYPE:
             case NUMBER_TYPE:
                 break;
             case STRING_TYPE:
-                _value.delString();
+                value_.delString();
                 break;
             case ARRAY_TYPE:
-                _value.delArray();
+                value_.delArray();
                 break;
             case OBJECT_TYPE:
-                _value.delObject();
+                value_.delObject();
                 break;
         }
     }
@@ -941,24 +941,24 @@ class Dict {
             return *this;
         }
         clear();
-        switch (dict._type) {
+        switch (dict.type_) {
             case NULL_TYPE:
                 break;
             case BOOLEAN_TYPE:
             case NUMBER_TYPE:
-                _value = dict._value;
+                value_ = dict.value_;
                 break;
             case STRING_TYPE:
-                _value.newString(dict._value.getString());
+                value_.newString(dict.value_.getString());
                 break;
             case ARRAY_TYPE:
-                _value.newArray(dict._value.getArray());
+                value_.newArray(dict.value_.getArray());
                 break;
             case OBJECT_TYPE:
-                _value.newObject(dict._value.getObject());
+                value_.newObject(dict.value_.getObject());
                 break;
         }
-        _type = dict._type;
+        type_ = dict.type_;
         return *this;
     }
 
@@ -975,24 +975,24 @@ class Dict {
         if (!isNull()) {
             throw AccessException(*this, "is not null");
         }
-        switch (dict._type) {
+        switch (dict.type_) {
             case NULL_TYPE:
                 break;
             case BOOLEAN_TYPE:
             case NUMBER_TYPE:
-                _value = dict._value;
+                value_ = dict.value_;
                 break;
             case STRING_TYPE:
-                _value.newString(dict._value.getString());
+                value_.newString(dict.value_.getString());
                 break;
             case ARRAY_TYPE:
-                _value.newArray(dict._value.getArray());
+                value_.newArray(dict.value_.getArray());
                 break;
             case OBJECT_TYPE:
-                _value.newObject(dict._value.getObject());
+                value_.newObject(dict.value_.getObject());
                 break;
         }
-        _type = dict._type;
+        type_ = dict.type_;
         return *this;
     }
 
@@ -1002,7 +1002,7 @@ class Dict {
      * @return EType& Reference of type.
      */
     EType& getType() {
-        return _type;
+        return type_;
     }
 
     /**
@@ -1011,7 +1011,7 @@ class Dict {
      * @return const EType& the read-only (constant) reference of type.
      */
     const EType& getType() const {
-        return _type;
+        return type_;
     }
 
     /**
@@ -1020,7 +1020,7 @@ class Dict {
      * @return UValue& Reference of value.
      */
     UValue& getValue() {
-        return _value;
+        return value_;
     }
 
     /**
@@ -1029,7 +1029,7 @@ class Dict {
      * @return UValue& the read-only (constant) reference of value.
      */
     const UValue& getValue() const {
-        return _value;
+        return value_;
     }
 
     /**
@@ -1038,34 +1038,34 @@ class Dict {
      * @param dict A dictionnary.
      */
     void swap(Dict& dict) {
-        EType tmpType = _type;
-        UValue tmpValue = _value;
-        _type = dict._type;
-        _value = dict._value;
-        dict._type = tmpType;
-        dict._value = tmpValue;
+        EType tmpType = type_;
+        UValue tmpValue = value_;
+        type_ = dict.type_;
+        value_ = dict.value_;
+        dict.type_ = tmpType;
+        dict.value_ = tmpValue;
     }
 
     /**
      * @brief Clear dict and set type as null.
      */
     void clear() {
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case BOOLEAN_TYPE:
             case NUMBER_TYPE:
                 break;
             case STRING_TYPE:
-                _value.delString();
+                value_.delString();
                 break;
             case ARRAY_TYPE:
-                _value.delArray();
+                value_.delArray();
                 break;
             case OBJECT_TYPE:
-                _value.delObject();
+                value_.delObject();
                 break;
         }
-        _type = NULL_TYPE;
+        type_ = NULL_TYPE;
     }
 
     // -------------------------------------------------------------------------
@@ -1082,7 +1082,7 @@ class Dict {
      * @brief Return true if type is null else false.
      */
     bool isNull() const {
-        return _type == NULL_TYPE;
+        return type_ == NULL_TYPE;
     }
 
     /**
@@ -1110,7 +1110,7 @@ class Dict {
      * @brief Return true if type is boolean else false.
      */
     bool isBoolean() const {
-        return _type == BOOLEAN_TYPE;
+        return type_ == BOOLEAN_TYPE;
     }
 
     /**
@@ -1124,10 +1124,10 @@ class Dict {
             throw AccessException(*this, "is not a boolean");
         }
         if (isNull()) {
-            _type = BOOLEAN_TYPE;
-            _value.getBoolean() = false;
+            type_ = BOOLEAN_TYPE;
+            value_.getBoolean() = false;
         }
-        return _value.getBoolean();
+        return value_.getBoolean();
     }
 
     /**
@@ -1140,7 +1140,7 @@ class Dict {
         if (!isBoolean()) {
             throw AccessException(*this, "is not a boolean");
         }
-        return _value.getBoolean();
+        return value_.getBoolean();
     }
 
     /**
@@ -1175,8 +1175,8 @@ class Dict {
             throw AccessException(*this, "is not a boolean");
         }
         if (isNull()) {
-            _type = BOOLEAN_TYPE;
-            _value.getBoolean() = false;
+            type_ = BOOLEAN_TYPE;
+            value_.getBoolean() = false;
         }
     }
 
@@ -1192,8 +1192,8 @@ class Dict {
         if (!isNull() && !isBoolean()) {
             throw AccessException(*this, "is not a boolean");
         }
-        _type = BOOLEAN_TYPE;
-        _value.getBoolean() = value;
+        type_ = BOOLEAN_TYPE;
+        value_.getBoolean() = value;
     }
 
     /**
@@ -1204,7 +1204,7 @@ class Dict {
      */
     bool operator==(const boolean_t& value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case STRING_TYPE:
@@ -1213,7 +1213,7 @@ class Dict {
                 ret = false;
                 break;
             case BOOLEAN_TYPE:
-                ret = _value.getBoolean() == value;
+                ret = value_.getBoolean() == value;
                 break;
         }
         return ret;
@@ -1238,7 +1238,7 @@ class Dict {
      */
     bool operator>(const boolean_t& value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case STRING_TYPE:
@@ -1247,7 +1247,7 @@ class Dict {
                 ret = false;
                 break;
             case BOOLEAN_TYPE:
-                ret = _value.getBoolean() > value;
+                ret = value_.getBoolean() > value;
                 break;
         }
         return ret;
@@ -1261,7 +1261,7 @@ class Dict {
      */
     bool operator<(const boolean_t& value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case STRING_TYPE:
@@ -1270,7 +1270,7 @@ class Dict {
                 ret = false;
                 break;
             case BOOLEAN_TYPE:
-                ret = _value.getBoolean() < value;
+                ret = value_.getBoolean() < value;
                 break;
         }
         return ret;
@@ -1285,7 +1285,7 @@ class Dict {
      */
     bool operator>=(const boolean_t& value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case STRING_TYPE:
@@ -1294,7 +1294,7 @@ class Dict {
                 ret = false;
                 break;
             case BOOLEAN_TYPE:
-                ret = _value.getBoolean() >= value;
+                ret = value_.getBoolean() >= value;
                 break;
         }
         return ret;
@@ -1309,7 +1309,7 @@ class Dict {
      */
     bool operator<=(const boolean_t& value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case STRING_TYPE:
@@ -1318,7 +1318,7 @@ class Dict {
                 ret = false;
                 break;
             case BOOLEAN_TYPE:
-                ret = _value.getBoolean() <= value;
+                ret = value_.getBoolean() <= value;
                 break;
         }
         return ret;
@@ -1338,7 +1338,7 @@ class Dict {
      * @brief Return true if type is number else false.
      */
     bool isNumber() const {
-        return _type == NUMBER_TYPE;
+        return type_ == NUMBER_TYPE;
     }
 
     /**
@@ -1352,10 +1352,10 @@ class Dict {
             throw AccessException(*this, "is not a number");
         }
         if (isNull()) {
-            _type = NUMBER_TYPE;
-            _value.getNumber() = 0.0;
+            type_ = NUMBER_TYPE;
+            value_.getNumber() = 0.0;
         }
-        return _value.getNumber();
+        return value_.getNumber();
     }
 
     /**
@@ -1368,7 +1368,7 @@ class Dict {
         if (!isNumber()) {
             throw AccessException(*this, "is not a number");
         }
-        return _value.getNumber();
+        return value_.getNumber();
     }
 
     /**
@@ -1407,8 +1407,8 @@ class Dict {
             throw AccessException(*this, "is not a number");
         }
         if (isNull()) {
-            _type = NUMBER_TYPE;
-            _value.getNumber() = 0;
+            type_ = NUMBER_TYPE;
+            value_.getNumber() = 0;
         }
     }
 
@@ -1424,8 +1424,8 @@ class Dict {
         if (!isNull() && !isNumber()) {
             throw AccessException(*this, "is not a number");
         }
-        _type = NUMBER_TYPE;
-        _value.getNumber() = value;
+        type_ = NUMBER_TYPE;
+        value_.getNumber() = value;
     }
 
     /**
@@ -1438,7 +1438,7 @@ class Dict {
     template<typename T>
     bool operator==(const T& value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case BOOLEAN_TYPE:
             case STRING_TYPE:
@@ -1447,7 +1447,7 @@ class Dict {
                 ret = false;
                 break;
             case NUMBER_TYPE:
-                ret = _value.getNumber() == value;
+                ret = value_.getNumber() == value;
                 break;
         }
         return ret;
@@ -1474,7 +1474,7 @@ class Dict {
     template<typename T>
     bool operator>(const T& value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
             case BOOLEAN_TYPE:
@@ -1483,7 +1483,7 @@ class Dict {
                 ret = false;
                 break;
             case NUMBER_TYPE:
-                ret = _value.getNumber() > value;
+                ret = value_.getNumber() > value;
                 break;
         }
         return ret;
@@ -1498,7 +1498,7 @@ class Dict {
     template<typename T>
     bool operator<(const T& value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
             case BOOLEAN_TYPE:
@@ -1507,7 +1507,7 @@ class Dict {
                 ret = false;
                 break;
             case NUMBER_TYPE:
-                ret = _value.getNumber() < value;
+                ret = value_.getNumber() < value;
                 break;
         }
         return ret;
@@ -1523,7 +1523,7 @@ class Dict {
     template<typename T>
     bool operator>=(const T& value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
             case BOOLEAN_TYPE:
@@ -1532,7 +1532,7 @@ class Dict {
                 ret = false;
                 break;
             case NUMBER_TYPE:
-                ret = _value.getNumber() >= value;
+                ret = value_.getNumber() >= value;
                 break;
         }
         return ret;
@@ -1548,7 +1548,7 @@ class Dict {
     template<typename T>
     bool operator<=(const T& value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
             case BOOLEAN_TYPE:
@@ -1557,7 +1557,7 @@ class Dict {
                 ret = false;
                 break;
             case NUMBER_TYPE:
-                ret = _value.getNumber() <= value;
+                ret = value_.getNumber() <= value;
                 break;
         }
         return ret;
@@ -1577,7 +1577,7 @@ class Dict {
      * @brief Return true if type is a string else false.
      */
     bool isString() const {
-        return _type == STRING_TYPE;
+        return type_ == STRING_TYPE;
     }
 
     /**
@@ -1591,10 +1591,10 @@ class Dict {
             throw AccessException(*this, "is not a string");
         }
         if (isNull()) {
-            _type = STRING_TYPE;
-            _value.newString();
+            type_ = STRING_TYPE;
+            value_.newString();
         }
-        return _value.getString();
+        return value_.getString();
     }
 
     /**
@@ -1607,7 +1607,7 @@ class Dict {
         if (!isString()) {
             throw AccessException(*this, "is not a string");
         }
-        return _value.getString();
+        return value_.getString();
     }
 
     /**
@@ -1679,11 +1679,11 @@ class Dict {
             throw AccessException(*this, "is not a string");
         }
         if (isNull()) {
-            _type = STRING_TYPE;
-            _value.newString(value);
+            type_ = STRING_TYPE;
+            value_.newString(value);
         }
         else {
-            _value.getString() = value;
+            value_.getString() = value;
         }
     }
 
@@ -1702,11 +1702,11 @@ class Dict {
         std::ostringstream oss("");
         oss << value;
         if (isNull()) {
-            _type = STRING_TYPE;
-            _value.newString(oss.str());
+            type_ = STRING_TYPE;
+            value_.newString(oss.str());
         }
         else {
-            _value.getString() = oss.str();
+            value_.getString() = oss.str();
         }
     }
 
@@ -1783,14 +1783,14 @@ class Dict {
      * @brief Append a range of characters.
      * Appends characters in the range (__first,__last) to this string.
      *
-     * @tparam _InputIterator
+     * @tparam InputIterator
      * @param __first Iterator referencing the first character to append.
      * @param __last Iterator marking the end of the range.
      * @return Dict& Reference to this dictionnary.
      * @throw AccessException if dict type is not null and not a string.
      */
-    template<typename _InputIterator>
-    Dict& string_append(_InputIterator __first, _InputIterator __last) {
+    template<typename InputIterator>
+    Dict& string_append(InputIterator __first, InputIterator __last) {
         getString().append(__first, __last);
         return *this;
     }
@@ -1878,8 +1878,8 @@ class Dict {
      * @param __last Iterator marking the end of the range.
      * @throw AccessException if dict type is not null and not a string.
      */
-    template<typename _InputIterator>
-    void string_assign(_InputIterator __first, _InputIterator __last) {
+    template<typename InputIterator>
+    void string_assign(InputIterator __first, InputIterator __last) {
         getString().assign(__first, __last);
     }
 
@@ -2506,8 +2506,8 @@ class Dict {
      * @throw std::length_error If new length exceeds @c max_size().
      * @throw AccessException if dict type is not null and not a string.
      */
-    template<class _InputIterator>
-    void insert(string_t::iterator __p, _InputIterator __beg, _InputIterator __end) {
+    template<class InputIterator>
+    void insert(string_t::iterator __p, InputIterator __beg, InputIterator __end) {
         getString().insert(__p, __beg, __end);
     }
 
@@ -2913,7 +2913,7 @@ class Dict {
      * If the length of result exceeds max_size(), length_error is thrown.
      * The value of the string doesn't change if an error is thrown.
      *
-     * @tparam _InputIterator
+     * @tparam InputIterator
      * @param __i1 Iterator referencing start of range to replace.
      * @param __i2 Iterator referencing end of range to replace.
      * @param __k1 Iterator referencing start of range to insert.
@@ -2922,8 +2922,8 @@ class Dict {
      * @throw std::length_error If new length exceeds max_size().
      * @throw AccessException if dict type is not null and not a string.
      */
-    template<class _InputIterator>
-    Dict& replace(string_t::iterator __i1, string_t::iterator __i2, _InputIterator __k1, _InputIterator __k2) {
+    template<class InputIterator>
+    Dict& replace(string_t::iterator __i1, string_t::iterator __i2, InputIterator __k1, InputIterator __k2) {
         getString().replace(__i1, __i2, __k1, __k2);
         return *this;
     }
@@ -3109,7 +3109,7 @@ class Dict {
      */
     bool operator==(const std::string& value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case ARRAY_TYPE:
@@ -3118,7 +3118,7 @@ class Dict {
                 ret = false;
                 break;
             case STRING_TYPE:
-                ret = _value.getString() == value;
+                ret = value_.getString() == value;
                 break;
         }
         return ret;
@@ -3132,7 +3132,7 @@ class Dict {
      */
     bool operator==(const char* value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case ARRAY_TYPE:
@@ -3141,7 +3141,7 @@ class Dict {
                 ret = false;
                 break;
             case STRING_TYPE:
-                ret = _value.getString() == value;
+                ret = value_.getString() == value;
                 break;
         }
         return ret;
@@ -3157,7 +3157,7 @@ class Dict {
     template<std::size_t Size>
     bool operator==(const char (&value)[Size]) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case ARRAY_TYPE:
@@ -3166,7 +3166,7 @@ class Dict {
                 ret = false;
                 break;
             case STRING_TYPE:
-                ret = _value.getString() == value;
+                ret = value_.getString() == value;
                 break;
         }
         return ret;
@@ -3212,7 +3212,7 @@ class Dict {
      */
     bool operator>(const std::string& value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case ARRAY_TYPE:
@@ -3221,7 +3221,7 @@ class Dict {
                 ret = false;
                 break;
             case STRING_TYPE:
-                ret = _value.getString() > value;
+                ret = value_.getString() > value;
                 break;
         }
         return ret;
@@ -3235,7 +3235,7 @@ class Dict {
      */
     bool operator>(const char* value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case ARRAY_TYPE:
@@ -3244,7 +3244,7 @@ class Dict {
                 ret = false;
                 break;
             case STRING_TYPE:
-                ret = _value.getString() > value;
+                ret = value_.getString() > value;
                 break;
         }
         return ret;
@@ -3260,7 +3260,7 @@ class Dict {
     template<std::size_t Size>
     bool operator>(const char (&value)[Size]) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case ARRAY_TYPE:
@@ -3269,7 +3269,7 @@ class Dict {
                 ret = false;
                 break;
             case STRING_TYPE:
-                ret = _value.getString() > value;
+                ret = value_.getString() > value;
                 break;
         }
         return ret;
@@ -3283,7 +3283,7 @@ class Dict {
      */
     bool operator<(const std::string& value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case ARRAY_TYPE:
@@ -3292,7 +3292,7 @@ class Dict {
                 ret = false;
                 break;
             case STRING_TYPE:
-                ret = _value.getString() < value;
+                ret = value_.getString() < value;
                 break;
         }
         return ret;
@@ -3306,7 +3306,7 @@ class Dict {
      */
     bool operator<(const char* value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case ARRAY_TYPE:
@@ -3315,7 +3315,7 @@ class Dict {
                 ret = false;
                 break;
             case STRING_TYPE:
-                ret = _value.getString() < value;
+                ret = value_.getString() < value;
                 break;
         }
         return ret;
@@ -3331,7 +3331,7 @@ class Dict {
     template<std::size_t Size>
     bool operator<(const char (&value)[Size]) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case ARRAY_TYPE:
@@ -3340,7 +3340,7 @@ class Dict {
                 ret = false;
                 break;
             case STRING_TYPE:
-                ret = _value.getString() < value;
+                ret = value_.getString() < value;
                 break;
         }
         return ret;
@@ -3355,7 +3355,7 @@ class Dict {
      */
     bool operator>=(const std::string& value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case ARRAY_TYPE:
@@ -3364,7 +3364,7 @@ class Dict {
                 ret = false;
                 break;
             case STRING_TYPE:
-                ret = _value.getString() >= value;
+                ret = value_.getString() >= value;
                 break;
         }
         return ret;
@@ -3379,7 +3379,7 @@ class Dict {
      */
     bool operator>=(const char* value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case ARRAY_TYPE:
@@ -3388,7 +3388,7 @@ class Dict {
                 ret = false;
                 break;
             case STRING_TYPE:
-                ret = _value.getString() >= value;
+                ret = value_.getString() >= value;
                 break;
         }
         return ret;
@@ -3405,7 +3405,7 @@ class Dict {
     template<std::size_t Size>
     bool operator>=(const char (&value)[Size]) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case ARRAY_TYPE:
@@ -3414,7 +3414,7 @@ class Dict {
                 ret = false;
                 break;
             case STRING_TYPE:
-                ret = _value.getString() >= value;
+                ret = value_.getString() >= value;
                 break;
         }
         return ret;
@@ -3429,7 +3429,7 @@ class Dict {
      */
     bool operator<=(const std::string& value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case ARRAY_TYPE:
@@ -3438,7 +3438,7 @@ class Dict {
                 ret = false;
                 break;
             case STRING_TYPE:
-                ret = _value.getString() <= value;
+                ret = value_.getString() <= value;
                 break;
         }
         return ret;
@@ -3453,7 +3453,7 @@ class Dict {
      */
     bool operator<=(const char* value) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case ARRAY_TYPE:
@@ -3462,7 +3462,7 @@ class Dict {
                 ret = false;
                 break;
             case STRING_TYPE:
-                ret = _value.getString() <= value;
+                ret = value_.getString() <= value;
                 break;
         }
         return ret;
@@ -3479,7 +3479,7 @@ class Dict {
     template<std::size_t Size>
     bool operator<=(const char (&value)[Size]) const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case ARRAY_TYPE:
@@ -3488,7 +3488,7 @@ class Dict {
                 ret = false;
                 break;
             case STRING_TYPE:
-                ret = _value.getString() <= value;
+                ret = value_.getString() <= value;
                 break;
         }
         return ret;
@@ -3508,7 +3508,7 @@ class Dict {
      * @brief Return true if type is array else false.
      */
     bool isArray() const {
-        return _type == ARRAY_TYPE;
+        return type_ == ARRAY_TYPE;
     }
 
     /**
@@ -3519,7 +3519,7 @@ class Dict {
      */
     array_t& getArray() {
         createArray();
-        return _value.getArray();
+        return value_.getArray();
     }
 
     /**
@@ -3532,7 +3532,7 @@ class Dict {
         if (!isArray()) {
             throw AccessException(*this, "is not a array");
         }
-        return _value.getArray();
+        return value_.getArray();
     }
 
     /**
@@ -3545,7 +3545,7 @@ class Dict {
     template<typename T>
     Dict& operator=(const std::deque<T>& value) {
         newArray();
-        _value.extendToArray(value);
+        value_.extendToArray(value);
         return *this;
     }
 
@@ -3559,7 +3559,7 @@ class Dict {
     template<typename T>
     Dict& operator=(const std::list<T>& value) {
         newArray();
-        _value.extendToArray(value);
+        value_.extendToArray(value);
         return *this;
     }
 
@@ -3574,7 +3574,7 @@ class Dict {
     template<typename T, typename U>
     Dict& operator=(const std::map<T, U>& value) {
         newArray();
-        _value.extendToArray(value);
+        value_.extendToArray(value);
         return *this;
     }
 
@@ -3588,7 +3588,7 @@ class Dict {
     template<typename T>
     Dict& operator=(const std::queue<T>& value) {
         newArray();
-        _value.extendToArray(value);
+        value_.extendToArray(value);
         return *this;
     }
 
@@ -3602,7 +3602,7 @@ class Dict {
     template<typename T>
     Dict& operator=(const std::set<T>& value) {
         newArray();
-        _value.extendToArray(value);
+        value_.extendToArray(value);
         return *this;
     }
 
@@ -3616,7 +3616,7 @@ class Dict {
     template<typename T>
     Dict& operator=(const std::stack<T>& value) {
         newArray();
-        _value.extendToArray(value);
+        value_.extendToArray(value);
         return *this;
     }
 
@@ -3630,7 +3630,7 @@ class Dict {
     template<typename T>
     Dict& operator=(const std::vector<T>& value) {
         newArray();
-        _value.extendToArray(value);
+        value_.extendToArray(value);
         return *this;
     }
 
@@ -3644,7 +3644,7 @@ class Dict {
     template<typename T>
     Dict& operator+=(const std::deque<T>& value) {
         createArray();
-        _value.extendToArray(value);
+        value_.extendToArray(value);
         return *this;
     }
 
@@ -3658,7 +3658,7 @@ class Dict {
     template<typename T>
     Dict& operator+=(const std::list<T>& value) {
         createArray();
-        _value.extendToArray(value);
+        value_.extendToArray(value);
         return *this;
     }
 
@@ -3673,7 +3673,7 @@ class Dict {
     template<typename T, typename U>
     Dict& operator+=(const std::map<T, U>& value) {
         createArray();
-        _value.extendToArray(value);
+        value_.extendToArray(value);
         return *this;
     }
 
@@ -3687,7 +3687,7 @@ class Dict {
     template<typename T>
     Dict& operator+=(const std::queue<T>& value) {
         createArray();
-        _value.extendToArray(value);
+        value_.extendToArray(value);
         return *this;
     }
 
@@ -3701,7 +3701,7 @@ class Dict {
     template<typename T>
     Dict& operator+=(const std::set<T>& value) {
         createArray();
-        _value.extendToArray(value);
+        value_.extendToArray(value);
         return *this;
     }
 
@@ -3715,7 +3715,7 @@ class Dict {
     template<typename T>
     Dict& operator+=(const std::stack<T>& value) {
         createArray();
-        _value.extendToArray(value);
+        value_.extendToArray(value);
         return *this;
     }
 
@@ -3729,7 +3729,7 @@ class Dict {
     template<typename T>
     Dict& operator+=(const std::vector<T>& value) {
         createArray();
-        _value.extendToArray(value);
+        value_.extendToArray(value);
         return *this;
     }
 
@@ -3739,13 +3739,13 @@ class Dict {
      * @throw AccessException if dict type is not a null and not a array.
      */
     void newArray() {
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
-                _type = ARRAY_TYPE;
-                _value.newArray();
+                type_ = ARRAY_TYPE;
+                value_.newArray();
                 break;
             case ARRAY_TYPE:
-                _value.getArray().clear();
+                value_.getArray().clear();
                 break;
             case BOOLEAN_TYPE:
             case NUMBER_TYPE:
@@ -3766,7 +3766,7 @@ class Dict {
     template<typename T>
     void newArray(const T& value) {
         newArray();
-        _value.extendToArray(value);
+        value_.extendToArray(value);
     }
 
     /**
@@ -3782,14 +3782,14 @@ class Dict {
     template<typename T>
     Dict& operator[](const T& index) {
         createArray();
-        if (static_cast<std::size_t>(index) < _value.getArray().size()) {
-            return _value.getArray()[static_cast<std::size_t>(index)];
+        if (static_cast<std::size_t>(index) < value_.getArray().size()) {
+            return value_.getArray()[static_cast<std::size_t>(index)];
         }
-        while (_value.getArray().size() < static_cast<std::size_t>(index)) {
-            _value.getArray().push_back(Dict());
+        while (value_.getArray().size() < static_cast<std::size_t>(index)) {
+            value_.getArray().push_back(Dict());
         }
-        _value.getArray().push_back(Dict());
-        return _value.getArray().back();
+        value_.getArray().push_back(Dict());
+        return value_.getArray().back();
     }
 
     /**
@@ -3805,10 +3805,10 @@ class Dict {
         if (!isArray()) {
             throw AccessException(*this, "is not a array");
         }
-        if (static_cast<std::size_t>(index) >= _value.getArray().size()) {
+        if (static_cast<std::size_t>(index) >= value_.getArray().size()) {
             throw ChildException(*this, static_cast<unsigned long>(index));
         }
-        return _value.getArray()[static_cast<std::size_t>(index)];
+        return value_.getArray()[static_cast<std::size_t>(index)];
     }
 
     /**
@@ -3823,7 +3823,7 @@ class Dict {
         if (!isArray()) {
             throw AccessException(*this, "is not a array");
         }
-        return static_cast<std::size_t>(index) < _value.getArray().size();
+        return static_cast<std::size_t>(index) < value_.getArray().size();
     }
 
     /**
@@ -3838,7 +3838,7 @@ class Dict {
         if (!isArray()) {
             throw AccessException(*this, "is not a array");
         }
-        return static_cast<std::size_t>(index) < _value.getArray().size() && _value.getArray()[index]._type == type;
+        return static_cast<std::size_t>(index) < value_.getArray().size() && value_.getArray()[index].type_ == type;
     }
 
     /**
@@ -3869,8 +3869,8 @@ class Dict {
      * @param __last An input iterator.
      * @throw AccessException if dict type is not null or not a array
      */
-    template<typename _InputIterator>
-    void array_assign(_InputIterator __first, _InputIterator __last) {
+    template<typename InputIterator>
+    void array_assign(InputIterator __first, InputIterator __last) {
         getArray().assign(__first, __last);
     }
 
@@ -4066,8 +4066,8 @@ class Dict {
      * @param __first An input iterator.
      * @param __last An input iterator.
      */
-    template<typename _InputIterator>
-    void insert(array_t::iterator __position, _InputIterator __first, _InputIterator __last) {
+    template<typename InputIterator>
+    void insert(array_t::iterator __position, InputIterator __first, InputIterator __last) {
         getArray().insert(__position, __first, __last);
     }
 
@@ -4159,7 +4159,7 @@ class Dict {
      * @brief Return true if type is object else false.
      */
     bool isObject() const {
-        return _type == OBJECT_TYPE;
+        return type_ == OBJECT_TYPE;
     }
 
     /**
@@ -4170,7 +4170,7 @@ class Dict {
      */
     object_t& getObject() {
         createObject();
-        return _value.getObject();
+        return value_.getObject();
     }
 
     /**
@@ -4183,7 +4183,7 @@ class Dict {
         if (!isObject()) {
             throw AccessException(*this, "is not a object");
         }
-        return _value.getObject();
+        return value_.getObject();
     }
 
     /**
@@ -4196,7 +4196,7 @@ class Dict {
     template<typename T>
     Dict& operator=(const std::map<object_t::key_type, T>& value) {
         newObject();
-        _value.extendToObject(value);
+        value_.extendToObject(value);
         return *this;
     }
 
@@ -4210,7 +4210,7 @@ class Dict {
     template<typename T>
     Dict& operator+=(const std::map<object_t::key_type, T>& value) {
         createObject();
-        _value.extendToObject(value);
+        value_.extendToObject(value);
         return *this;
     }
 
@@ -4220,13 +4220,13 @@ class Dict {
      * @throw AccessException if dict type is not a null and not a object.
      */
     void newObject() {
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
-                _type = OBJECT_TYPE;
-                _value.newObject();
+                type_ = OBJECT_TYPE;
+                value_.newObject();
                 break;
             case OBJECT_TYPE:
-                _value.getObject().clear();
+                value_.getObject().clear();
                 break;
             case BOOLEAN_TYPE:
             case NUMBER_TYPE:
@@ -4247,7 +4247,7 @@ class Dict {
     template<typename T>
     void newObject(const std::map<object_t::key_type, T>& value) {
         newObject();
-        _value.extendToObject(value);
+        value_.extendToObject(value);
     }
 
     /**
@@ -4261,11 +4261,11 @@ class Dict {
      */
     Dict& operator[](const std::string& key) {
         createObject();
-        object_t::iterator it = _value.getObject().find(key);
-        if (it != _value.getObject().end()) {
+        object_t::iterator it = value_.getObject().find(key);
+        if (it != value_.getObject().end()) {
             return it->second;
         }
-        return _value.getObject().insert(object_t::value_type(key, Dict())).first->second;
+        return value_.getObject().insert(object_t::value_type(key, Dict())).first->second;
     }
 
     /**
@@ -4280,8 +4280,8 @@ class Dict {
         if (!isObject()) {
             throw AccessException(*this, "is not a object");
         }
-        object_t::const_iterator it = _value.getObject().find(key);
-        if (it == _value.getObject().end()) {
+        object_t::const_iterator it = value_.getObject().find(key);
+        if (it == value_.getObject().end()) {
             throw ChildException(*this, key);
         }
         return it->second;
@@ -4350,7 +4350,7 @@ class Dict {
         if (!isObject()) {
             throw AccessException(*this, "is not a object");
         }
-        return _value.getObject().find(key) != _value.getObject().end();
+        return value_.getObject().find(key) != value_.getObject().end();
     }
 
     /**
@@ -4387,8 +4387,8 @@ class Dict {
         if (!isObject()) {
             throw AccessException(*this, "is not a object");
         }
-        object_t::const_iterator cit = _value.getObject().find(key);
-        return cit != _value.getObject().end() && cit->second._type == type;
+        object_t::const_iterator cit = value_.getObject().find(key);
+        return cit != value_.getObject().end() && cit->second.type_ == type;
     }
 
     /**
@@ -4674,8 +4674,8 @@ class Dict {
      * @param __last Iterator pointing to the end of the range.
      * @throw AccessException if dict type is not null or not a object
      */
-    template<typename _InputIterator>
-    void insert(_InputIterator __first, _InputIterator __last) {
+    template<typename InputIterator>
+    void insert(InputIterator __first, InputIterator __last) {
         return getObject().insert(__first, __last);
     }
 
@@ -4810,7 +4810,7 @@ class Dict {
      */
     std::size_t capacity() const {
         std::size_t ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case BOOLEAN_TYPE:
             case NUMBER_TYPE:
@@ -4838,8 +4838,8 @@ class Dict {
         const Dict* pdict = this;
         for (Path::const_iterator cit = path.begin(); cit != path.end(); ++cit) {
             if (cit->isString() && pdict->isObject()) {
-                object_t::const_iterator ocit = pdict->_value.getObject().find(cit->_value.getString());
-                if (ocit != pdict->_value.getObject().end()) {
+                object_t::const_iterator ocit = pdict->value_.getObject().find(cit->value_.getString());
+                if (ocit != pdict->value_.getObject().end()) {
                     pdict = &(ocit->second);
                 }
                 else {
@@ -4848,8 +4848,8 @@ class Dict {
                 }
             }
             else if (cit->isNumber() && pdict->isArray()) {
-                if (cit->_value.getNumber() < pdict->_value.getArray().size()) {
-                    pdict = &(pdict->_value.getArray().at(cit->_value.getNumber()));
+                if (cit->value_.getNumber() < pdict->value_.getArray().size()) {
+                    pdict = &(pdict->value_.getArray().at(cit->value_.getNumber()));
                 }
                 else {
                     ret = false;
@@ -4876,8 +4876,8 @@ class Dict {
         const Dict* pdict = this;
         for (Path::const_iterator cit = path.begin(); cit != path.end(); ++cit) {
             if (pdict->isObject() && cit->isString()) {
-                object_t::const_iterator ocit = pdict->_value.getObject().find(cit->_value.getString());
-                if (ocit != pdict->_value.getObject().end()) {
+                object_t::const_iterator ocit = pdict->value_.getObject().find(cit->value_.getString());
+                if (ocit != pdict->value_.getObject().end()) {
                     pdict = &ocit->second;
                 }
                 else {
@@ -4886,8 +4886,8 @@ class Dict {
                 }
             }
             else if (pdict->isArray() && cit->isNumber()) {
-                if (cit->_value.getNumber() < pdict->_value.getArray().size()) {
-                    pdict = &pdict->_value.getArray().at(cit->_value.getNumber());
+                if (cit->value_.getNumber() < pdict->value_.getArray().size()) {
+                    pdict = &pdict->value_.getArray().at(cit->value_.getNumber());
                 }
                 else {
                     ret = false;
@@ -4910,7 +4910,7 @@ class Dict {
      */
     bool empty() const {
         bool ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case BOOLEAN_TYPE:
             case NUMBER_TYPE:
@@ -4935,7 +4935,7 @@ class Dict {
      */
     std::size_t max_size() const {
         std::size_t ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case BOOLEAN_TYPE:
             case NUMBER_TYPE:
@@ -4968,7 +4968,7 @@ class Dict {
      * @throw std::length_error If res_arg exceeds max_size().
      */
     void reserve(std::size_t __res_arg = 0) {
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case BOOLEAN_TYPE:
             case NUMBER_TYPE:
@@ -4994,7 +4994,7 @@ class Dict {
      * @param __n Number of elements the %string or %vector should contain.
      */
     void resize(std::size_t __n) {
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case BOOLEAN_TYPE:
             case NUMBER_TYPE:
@@ -5015,7 +5015,7 @@ class Dict {
      */
     std::size_t size() const {
         std::size_t ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case BOOLEAN_TYPE:
             case NUMBER_TYPE:
@@ -5042,25 +5042,25 @@ class Dict {
      */
     bool operator==(const Dict& value) const {
         bool ret;
-        if (_type == value._type) {
-            switch (_type) {
+        if (type_ == value.type_) {
+            switch (type_) {
                 case NULL_TYPE:
                     ret = true;
                     break;
                 case BOOLEAN_TYPE:
-                    ret = _value.getBoolean() == value._value.getBoolean();
+                    ret = value_.getBoolean() == value.value_.getBoolean();
                     break;
                 case NUMBER_TYPE:
-                    ret = _value.getNumber() == value._value.getNumber();
+                    ret = value_.getNumber() == value.value_.getNumber();
                     break;
                 case STRING_TYPE:
-                    ret = _value.getString() == value._value.getString();
+                    ret = value_.getString() == value.value_.getString();
                     break;
                 case ARRAY_TYPE:
-                    ret = _value.getArray() == value._value.getArray();
+                    ret = value_.getArray() == value.value_.getArray();
                     break;
                 case OBJECT_TYPE:
-                    ret = _value.getObject() == value._value.getObject();
+                    ret = value_.getObject() == value.value_.getObject();
                     break;
             }
         }
@@ -5088,25 +5088,25 @@ class Dict {
      */
     bool operator>(const Dict& value) const {
         bool ret;
-        if (_type == value._type) {
-            switch (_type) {
+        if (type_ == value.type_) {
+            switch (type_) {
                 case NULL_TYPE:
                     ret = true;
                     break;
                 case BOOLEAN_TYPE:
-                    ret = _value.getBoolean() > value._value.getBoolean();
+                    ret = value_.getBoolean() > value.value_.getBoolean();
                     break;
                 case NUMBER_TYPE:
-                    ret = _value.getNumber() > value._value.getNumber();
+                    ret = value_.getNumber() > value.value_.getNumber();
                     break;
                 case STRING_TYPE:
-                    ret = _value.getString() > value._value.getString();
+                    ret = value_.getString() > value.value_.getString();
                     break;
                 case ARRAY_TYPE:
-                    ret = _value.getArray() > value._value.getArray();
+                    ret = value_.getArray() > value.value_.getArray();
                     break;
                 case OBJECT_TYPE:
-                    ret = _value.getObject() > value._value.getObject();
+                    ret = value_.getObject() > value.value_.getObject();
                     break;
             }
         }
@@ -5124,25 +5124,25 @@ class Dict {
      */
     bool operator<(const Dict& value) const {
         bool ret;
-        if (_type == value._type) {
-            switch (_type) {
+        if (type_ == value.type_) {
+            switch (type_) {
                 case NULL_TYPE:
                     ret = true;
                     break;
                 case BOOLEAN_TYPE:
-                    ret = _value.getBoolean() < value._value.getBoolean();
+                    ret = value_.getBoolean() < value.value_.getBoolean();
                     break;
                 case NUMBER_TYPE:
-                    ret = _value.getNumber() < value._value.getNumber();
+                    ret = value_.getNumber() < value.value_.getNumber();
                     break;
                 case STRING_TYPE:
-                    ret = _value.getString() < value._value.getString();
+                    ret = value_.getString() < value.value_.getString();
                     break;
                 case ARRAY_TYPE:
-                    ret = _value.getArray() < value._value.getArray();
+                    ret = value_.getArray() < value.value_.getArray();
                     break;
                 case OBJECT_TYPE:
-                    ret = _value.getObject() < value._value.getObject();
+                    ret = value_.getObject() < value.value_.getObject();
                     break;
             }
         }
@@ -5160,25 +5160,25 @@ class Dict {
      */
     bool operator>=(const Dict& value) const {
         bool ret;
-        if (_type == value._type) {
-            switch (_type) {
+        if (type_ == value.type_) {
+            switch (type_) {
                 case NULL_TYPE:
                     ret = true;
                     break;
                 case BOOLEAN_TYPE:
-                    ret = _value.getBoolean() >= value._value.getBoolean();
+                    ret = value_.getBoolean() >= value.value_.getBoolean();
                     break;
                 case NUMBER_TYPE:
-                    ret = _value.getNumber() >= value._value.getNumber();
+                    ret = value_.getNumber() >= value.value_.getNumber();
                     break;
                 case STRING_TYPE:
-                    ret = _value.getString() >= value._value.getString();
+                    ret = value_.getString() >= value.value_.getString();
                     break;
                 case ARRAY_TYPE:
-                    ret = _value.getArray() >= value._value.getArray();
+                    ret = value_.getArray() >= value.value_.getArray();
                     break;
                 case OBJECT_TYPE:
-                    ret = _value.getObject() >= value._value.getObject();
+                    ret = value_.getObject() >= value.value_.getObject();
                     break;
             }
         }
@@ -5196,25 +5196,25 @@ class Dict {
      */
     bool operator<=(const Dict& value) const {
         bool ret;
-        if (_type == value._type) {
-            switch (_type) {
+        if (type_ == value.type_) {
+            switch (type_) {
                 case NULL_TYPE:
                     ret = true;
                     break;
                 case BOOLEAN_TYPE:
-                    ret = _value.getBoolean() <= value._value.getBoolean();
+                    ret = value_.getBoolean() <= value.value_.getBoolean();
                     break;
                 case NUMBER_TYPE:
-                    ret = _value.getNumber() <= value._value.getNumber();
+                    ret = value_.getNumber() <= value.value_.getNumber();
                     break;
                 case STRING_TYPE:
-                    ret = _value.getString() <= value._value.getString();
+                    ret = value_.getString() <= value.value_.getString();
                     break;
                 case ARRAY_TYPE:
-                    ret = _value.getArray() <= value._value.getArray();
+                    ret = value_.getArray() <= value.value_.getArray();
                     break;
                 case OBJECT_TYPE:
-                    ret = _value.getObject() <= value._value.getObject();
+                    ret = value_.getObject() <= value.value_.getObject();
                     break;
             }
         }
@@ -5231,7 +5231,7 @@ class Dict {
      */
     Dict operator+() const {
         Dict ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case STRING_TYPE:
             case ARRAY_TYPE:
@@ -5239,10 +5239,10 @@ class Dict {
                 throw MethodException(*this, "operator+");
                 break;
             case BOOLEAN_TYPE:
-                ret = +_value.getBoolean();
+                ret = +value_.getBoolean();
                 break;
             case NUMBER_TYPE:
-                ret = +_value.getNumber();
+                ret = +value_.getNumber();
                 break;
         }
         return ret;
@@ -5255,7 +5255,7 @@ class Dict {
      */
     Dict operator-() const {
         Dict ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case STRING_TYPE:
             case ARRAY_TYPE:
@@ -5263,10 +5263,10 @@ class Dict {
                 throw MethodException(*this, "operator-");
                 break;
             case BOOLEAN_TYPE:
-                ret = -_value.getBoolean();
+                ret = -value_.getBoolean();
                 break;
             case NUMBER_TYPE:
-                ret = -_value.getNumber();
+                ret = -value_.getNumber();
                 break;
         }
         return ret;
@@ -5280,7 +5280,7 @@ class Dict {
      */
     Dict operator+(const std::string& value) const {
         Dict ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
             case OBJECT_TYPE:
@@ -5289,7 +5289,7 @@ class Dict {
                 throw MethodException(*this, "operator+");
                 break;
             case STRING_TYPE:
-                ret = _value.getString() + value;
+                ret = value_.getString() + value;
         }
         return ret;
     }
@@ -5302,7 +5302,7 @@ class Dict {
      */
     Dict operator+(const char* value) const {
         Dict ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
             case OBJECT_TYPE:
@@ -5311,7 +5311,7 @@ class Dict {
                 throw MethodException(*this, "operator+");
                 break;
             case STRING_TYPE:
-                ret = _value.getString() + value;
+                ret = value_.getString() + value;
         }
         return ret;
     }
@@ -5325,7 +5325,7 @@ class Dict {
     template<std::size_t Size>
     Dict operator+(const char (&value)[Size]) const {
         Dict ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
             case OBJECT_TYPE:
@@ -5334,7 +5334,7 @@ class Dict {
                 throw MethodException(*this, "operator+");
                 break;
             case STRING_TYPE:
-                ret = _value.getString() + value;
+                ret = value_.getString() + value;
         }
         return ret;
     }
@@ -5349,7 +5349,7 @@ class Dict {
     template<typename T>
     Dict operator+(const T& value) const {
         Dict ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
             case OBJECT_TYPE:
@@ -5357,10 +5357,10 @@ class Dict {
                 throw MethodException(*this, "operator+");
                 break;
             case BOOLEAN_TYPE:
-                ret = _value.getBoolean() + value;
+                ret = value_.getBoolean() + value;
                 break;
             case NUMBER_TYPE:
-                ret = _value.getNumber() + value;
+                ret = value_.getNumber() + value;
                 break;
         }
         return ret;
@@ -5376,7 +5376,7 @@ class Dict {
     template<typename T>
     Dict operator-(const T& value) const {
         Dict ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
             case OBJECT_TYPE:
@@ -5384,10 +5384,10 @@ class Dict {
                 throw MethodException(*this, "operator-");
                 break;
             case BOOLEAN_TYPE:
-                ret = _value.getBoolean() - value;
+                ret = value_.getBoolean() - value;
                 break;
             case NUMBER_TYPE:
-                ret = _value.getNumber() - value;
+                ret = value_.getNumber() - value;
                 break;
         }
         return ret;
@@ -5403,7 +5403,7 @@ class Dict {
     template<typename T>
     Dict operator*(const T& value) const {
         Dict ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
             case OBJECT_TYPE:
@@ -5411,10 +5411,10 @@ class Dict {
                 throw MethodException(*this, "operator*");
                 break;
             case BOOLEAN_TYPE:
-                ret = _value.getBoolean() * value;
+                ret = value_.getBoolean() * value;
                 break;
             case NUMBER_TYPE:
-                ret = _value.getNumber() * value;
+                ret = value_.getNumber() * value;
                 break;
         }
         return ret;
@@ -5430,7 +5430,7 @@ class Dict {
     template<typename T>
     Dict operator/(const T& value) const {
         Dict ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
             case OBJECT_TYPE:
@@ -5438,10 +5438,10 @@ class Dict {
                 throw MethodException(*this, "operator/");
                 break;
             case BOOLEAN_TYPE:
-                ret = _value.getBoolean() / value;
+                ret = value_.getBoolean() / value;
                 break;
             case NUMBER_TYPE:
-                ret = _value.getNumber() / value;
+                ret = value_.getNumber() / value;
                 break;
         }
         return ret;
@@ -5457,7 +5457,7 @@ class Dict {
     template<typename T>
     Dict operator%(const T& value) const {
         Dict ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
             case OBJECT_TYPE:
@@ -5465,10 +5465,10 @@ class Dict {
                 throw MethodException(*this, "operator%");
                 break;
             case BOOLEAN_TYPE:
-                ret = _value.getBoolean() - static_cast<long>(_value.getBoolean() / value) * value;
+                ret = value_.getBoolean() - static_cast<long>(value_.getBoolean() / value) * value;
                 break;
             case NUMBER_TYPE:
-                ret = _value.getNumber() - static_cast<long>(_value.getNumber() / value) * value;
+                ret = value_.getNumber() - static_cast<long>(value_.getNumber() / value) * value;
                 break;
         }
         return ret;
@@ -5481,7 +5481,7 @@ class Dict {
      */
     Dict operator~() const {
         Dict ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
             case OBJECT_TYPE:
@@ -5490,7 +5490,7 @@ class Dict {
                 throw MethodException(*this, "operator~");
                 break;
             case NUMBER_TYPE:
-                ret = ~static_cast<long>(_value.getNumber());
+                ret = ~static_cast<long>(value_.getNumber());
                 break;
         }
         return ret;
@@ -5506,7 +5506,7 @@ class Dict {
     template<typename T>
     Dict operator&(const T& value) const {
         Dict ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
             case OBJECT_TYPE:
@@ -5514,10 +5514,10 @@ class Dict {
                 throw MethodException(*this, "operator&");
                 break;
             case BOOLEAN_TYPE:
-                ret = _value.getBoolean() & value;
+                ret = value_.getBoolean() & value;
                 break;
             case NUMBER_TYPE:
-                ret = static_cast<long>(_value.getNumber()) & value;
+                ret = static_cast<long>(value_.getNumber()) & value;
                 break;
         }
         return ret;
@@ -5533,7 +5533,7 @@ class Dict {
     template<typename T>
     Dict operator|(const T& value) const {
         Dict ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
             case OBJECT_TYPE:
@@ -5541,10 +5541,10 @@ class Dict {
                 throw MethodException(*this, "operator|");
                 break;
             case BOOLEAN_TYPE:
-                ret = _value.getBoolean() | value;
+                ret = value_.getBoolean() | value;
                 break;
             case NUMBER_TYPE:
-                ret = static_cast<long>(_value.getNumber()) | value;
+                ret = static_cast<long>(value_.getNumber()) | value;
                 break;
         }
         return ret;
@@ -5560,7 +5560,7 @@ class Dict {
     template<typename T>
     Dict operator^(const T& value) const {
         Dict ret;
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
             case OBJECT_TYPE:
@@ -5568,10 +5568,10 @@ class Dict {
                 throw MethodException(*this, "operator^");
                 break;
             case BOOLEAN_TYPE:
-                ret = _value.getBoolean() ^ value;
+                ret = value_.getBoolean() ^ value;
                 break;
             case NUMBER_TYPE:
-                ret = static_cast<long>(_value.getNumber()) ^ value;
+                ret = static_cast<long>(value_.getNumber()) ^ value;
                 break;
         }
         return ret;
@@ -5607,15 +5607,15 @@ class Dict {
     template<typename T>
     operator std::deque<T>() const {
         std::deque<T> ret;
-        switch (_type) {
+        switch (type_) {
             case ARRAY_TYPE: {
-                for (std::size_t i = 0; i < _value.getArray().size(); ++i) {
-                    ret.push_back(_value.getArray()[i]);
+                for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
+                    ret.push_back(value_.getArray()[i]);
                 }
                 break;
             }
             case OBJECT_TYPE: {
-                for (object_t::const_iterator it = _value.getObject().begin(); it != _value.getObject().end(); ++it) {
+                for (object_t::const_iterator it = value_.getObject().begin(); it != value_.getObject().end(); ++it) {
                     ret.push_back(it->second);
                 }
                 break;
@@ -5634,14 +5634,14 @@ class Dict {
     template<typename T>
     operator std::list<T>() const {
         std::list<T> ret;
-        switch (_type) {
+        switch (type_) {
             case ARRAY_TYPE:
-                for (std::size_t i = 0; i < _value.getArray().size(); ++i) {
-                    ret.push_back(_value.getArray()[i]);
+                for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
+                    ret.push_back(value_.getArray()[i]);
                 }
                 break;
             case OBJECT_TYPE:
-                for (object_t::const_iterator it = _value.getObject().begin(); it != _value.getObject().end(); ++it) {
+                for (object_t::const_iterator it = value_.getObject().begin(); it != value_.getObject().end(); ++it) {
                     ret.push_back(it->second);
                 }
                 break;
@@ -5661,7 +5661,7 @@ class Dict {
     operator std::map<std::string, T>() const {
         std::map<std::string, T> ret;
         if (isObject()) {
-            for (object_t::const_iterator it = _value.getObject().begin(); it != _value.getObject().end(); ++it) {
+            for (object_t::const_iterator it = value_.getObject().begin(); it != value_.getObject().end(); ++it) {
                 ret.insert(std::pair<std::string, T>(it->first, it->second));
             }
         }
@@ -5678,8 +5678,8 @@ class Dict {
     operator std::map<T, U>() const {
         std::map<T, U> ret;
         if (isArray()) {
-            for (std::size_t i = 0; i < _value.getArray().size(); ++i) {
-                ret.insert(std::pair<T, U>(i, _value.getArray()[i]));
+            for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
+                ret.insert(std::pair<T, U>(i, value_.getArray()[i]));
             }
         }
         return ret;
@@ -5693,14 +5693,14 @@ class Dict {
     template<typename T>
     operator std::queue<T>() const {
         std::queue<T> ret;
-        switch (_type) {
+        switch (type_) {
             case ARRAY_TYPE:
-                for (std::size_t i = 0; i < _value.getArray().size(); ++i) {
-                    ret.push(_value.getArray()[i]);
+                for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
+                    ret.push(value_.getArray()[i]);
                 }
                 break;
             case OBJECT_TYPE:
-                for (object_t::const_iterator it = _value.getObject().begin(); it != _value.getObject().end(); ++it) {
+                for (object_t::const_iterator it = value_.getObject().begin(); it != value_.getObject().end(); ++it) {
                     ret.push(it->second);
                 }
                 break;
@@ -5718,14 +5718,14 @@ class Dict {
     template<typename T>
     operator std::set<T>() const {
         std::set<T> ret;
-        switch (_type) {
+        switch (type_) {
             case ARRAY_TYPE:
-                for (std::size_t i = 0; i < _value.getArray().size(); ++i) {
-                    ret.insert(static_cast<T>(_value.getArray()[i]));
+                for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
+                    ret.insert(static_cast<T>(value_.getArray()[i]));
                 }
                 break;
             case OBJECT_TYPE:
-                for (object_t::const_iterator it = _value.getObject().begin(); it != _value.getObject().end(); ++it) {
+                for (object_t::const_iterator it = value_.getObject().begin(); it != value_.getObject().end(); ++it) {
                     ret.insert(static_cast<T>(it->second));
                 }
                 break;
@@ -5743,14 +5743,14 @@ class Dict {
     template<typename T>
     operator std::stack<T>() const {
         std::stack<T> ret;
-        switch (_type) {
+        switch (type_) {
             case ARRAY_TYPE:
-                for (std::size_t i = 0; i < _value.getArray().size(); ++i) {
-                    ret.push(_value.getArray()[i]);
+                for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
+                    ret.push(value_.getArray()[i]);
                 }
                 break;
             case OBJECT_TYPE:
-                for (object_t::const_iterator it = _value.getObject().begin(); it != _value.getObject().end(); ++it) {
+                for (object_t::const_iterator it = value_.getObject().begin(); it != value_.getObject().end(); ++it) {
                     ret.push(it->second);
                 }
                 break;
@@ -5768,16 +5768,16 @@ class Dict {
     template<typename T>
     operator std::vector<T>() const {
         std::vector<T> ret;
-        switch (_type) {
+        switch (type_) {
             case ARRAY_TYPE:
-                ret.reserve(_value.getArray().size());
-                for (std::size_t i = 0; i < _value.getArray().size(); ++i) {
-                    ret.push_back(_value.getArray()[i]);
+                ret.reserve(value_.getArray().size());
+                for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
+                    ret.push_back(value_.getArray()[i]);
                 }
                 break;
             case OBJECT_TYPE:
-                ret.reserve(_value.getObject().size());
-                for (object_t::const_iterator it = _value.getObject().begin(); it != _value.getObject().end(); ++it) {
+                ret.reserve(value_.getObject().size());
+                for (object_t::const_iterator it = value_.getObject().begin(); it != value_.getObject().end(); ++it) {
                     ret.push_back(it->second);
                 }
                 break;
@@ -5794,10 +5794,10 @@ class Dict {
      * @throw AccessException If dict type is not a null and not a array.
      */
     void createArray() {
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
-                _type = ARRAY_TYPE;
-                _value.newArray();
+                type_ = ARRAY_TYPE;
+                value_.newArray();
                 break;
             case ARRAY_TYPE:
                 break;
@@ -5816,10 +5816,10 @@ class Dict {
      * @throw AccessException If dict type is not a null and not a object.
      */
     void createObject() {
-        switch (_type) {
+        switch (type_) {
             case NULL_TYPE:
-                _type = OBJECT_TYPE;
-                _value.newObject();
+                type_ = OBJECT_TYPE;
+                value_.newObject();
                 break;
             case OBJECT_TYPE:
                 break;
@@ -5835,4 +5835,4 @@ class Dict {
 
 } // namespace blet
 
-#endif // _BLET_DICT_H_
+#endif // BLETDICT_H__
