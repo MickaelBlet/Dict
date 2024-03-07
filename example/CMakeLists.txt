@@ -1,12 +1,10 @@
 set(library_project_name "${PROJECT_NAME}")
 
-get_target_property(library_include_dirs "${library_project_name}" INTERFACE_INCLUDE_DIRECTORIES)
-
-set(example_files
+set(example_source_files
     "${CMAKE_CURRENT_SOURCE_DIR}/quickstart.cpp"
 )
 
-foreach(file ${example_files})
+foreach(file ${example_source_files})
     get_filename_component(filenamewe "${file}" NAME_WE)
     add_executable("${filenamewe}.${library_project_name}.example" "${file}")
     set_target_properties("${filenamewe}.${library_project_name}.example"
@@ -16,7 +14,6 @@ foreach(file ${example_files})
             CXX_EXTENSIONS OFF
             NO_SYSTEM_FROM_IMPORTED ON
             COMPILE_FLAGS "-pedantic -Wall -Wextra -Werror"
-            INCLUDE_DIRECTORIES "${library_include_dirs}"
             LINK_LIBRARIES "${library_project_name}"
     )
 endforeach()
