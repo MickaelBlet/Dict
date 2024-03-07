@@ -4803,6 +4803,72 @@ class Dict {
     // -------------------------------------------------------------------------
 
     /**
+     * @brief If dict contains a @p path return this reference.
+     *
+     * @param path The dict Path.
+     * @return Dict& Reference of dict at path.
+     */
+    Dict& at(const Path& path) {
+        Dict* pdict = this;
+        for (Path::const_iterator cit = path.begin(); cit != path.end(); ++cit) {
+            if (cit->isString() && pdict->isObject()) {
+                object_t::iterator ocit = pdict->value_.getObject().find(cit->value_.getString());
+                if (ocit != pdict->value_.getObject().end()) {
+                    pdict = &(ocit->second);
+                }
+                else {
+                    throw ChildException(*pdict, cit->value_.getString());
+                }
+            }
+            else if (cit->isNumber() && pdict->isArray()) {
+                if (cit->value_.getNumber() < pdict->value_.getArray().size()) {
+                    pdict = &(pdict->value_.getArray().at(cit->value_.getNumber()));
+                }
+                else {
+                    throw ChildException(*pdict, cit->value_.getNumber());
+                }
+            }
+            else {
+                throw AccessException(*pdict, "wrong type of child");
+            }
+        }
+        return *pdict;
+    }
+
+    /**
+     * @brief If dict contains a @p path return this const reference.
+     *
+     * @param path The dict Path.
+     * @return const Dict& Reference of dict at path.
+     */
+    const Dict& at(const Path& path) const {
+        const Dict* pdict = this;
+        for (Path::const_iterator cit = path.begin(); cit != path.end(); ++cit) {
+            if (cit->isString() && pdict->isObject()) {
+                object_t::const_iterator ocit = pdict->value_.getObject().find(cit->value_.getString());
+                if (ocit != pdict->value_.getObject().end()) {
+                    pdict = &(ocit->second);
+                }
+                else {
+                    throw ChildException(*pdict, cit->value_.getString());
+                }
+            }
+            else if (cit->isNumber() && pdict->isArray()) {
+                if (cit->value_.getNumber() < pdict->value_.getArray().size()) {
+                    pdict = &(pdict->value_.getArray().at(cit->value_.getNumber()));
+                }
+                else {
+                    throw ChildException(*pdict, cit->value_.getNumber());
+                }
+            }
+            else {
+                throw AccessException(*pdict, "wrong type of child");
+            }
+        }
+        return *pdict;
+    }
+
+    /**
      * @brief Returns the total number of elements that the %string or %vector can
      * hold before needing to allocate more memory.
      *

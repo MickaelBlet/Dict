@@ -2,6 +2,105 @@
 
 #include "blet/dict.h"
 
+GTEST_TEST(dict_common, at) {
+    {
+        blet::Dict dict;
+        dict["foo"][3] = 42;
+        EXPECT_EQ(dict.at(blet::Dict::Path()["foo"][3]), 42);
+    }
+    {
+        blet::Dict dict;
+        dict["foo"][3] = 42;
+        const blet::Dict& cdict = dict;
+        EXPECT_EQ(cdict.at(blet::Dict::Path()["foo"][3]), 42);
+    }
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict["foo"][3] = 42;
+                    dict.at(blet::Dict::Path()["bar"][3]);
+                }
+                catch (const blet::Dict::ChildException& e) {
+                    EXPECT_STREQ(e.what(), "bar has not a key.");
+                    throw;
+                }
+            },
+            blet::Dict::ChildException);
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict[3] = 42;
+                    dict.at(blet::Dict::Path()[4]);
+                }
+                catch (const blet::Dict::ChildException& e) {
+                    EXPECT_STREQ(e.what(), "4 has out of range.");
+                    throw;
+                }
+            },
+            blet::Dict::ChildException);
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict["foo"][3] = 42;
+                    dict.at(blet::Dict::Path()[3]);
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "wrong type of child (is object).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict["foo"][3] = 42;
+                    const blet::Dict& cdict = dict;
+                    cdict.at(blet::Dict::Path()["bar"]);
+                }
+                catch (const blet::Dict::ChildException& e) {
+                    EXPECT_STREQ(e.what(), "bar has not a key.");
+                    throw;
+                }
+            },
+            blet::Dict::ChildException);
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict[3] = 42;
+                    const blet::Dict& cdict = dict;
+                    cdict.at(blet::Dict::Path()[4]);
+                }
+                catch (const blet::Dict::ChildException& e) {
+                    EXPECT_STREQ(e.what(), "4 has out of range.");
+                    throw;
+                }
+            },
+            blet::Dict::ChildException);
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict;
+                    dict["foo"][3] = 42;
+                    const blet::Dict& cdict = dict;
+                    cdict.at(blet::Dict::Path()[3]);
+                }
+                catch (const blet::Dict::AccessException& e) {
+                    EXPECT_STREQ(e.what(), "wrong type of child (is object).");
+                    throw;
+                }
+            },
+            blet::Dict::AccessException);
+    }
+}
+
 GTEST_TEST(dict_common, capacity) {
     {
         EXPECT_THROW(
