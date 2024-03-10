@@ -30,7 +30,7 @@ foreach(file ${test_source_files})
             INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/include"
             LINK_LIBRARIES "gmock_main;gmock;gtest;pthread;${library_project_name}"
     )
-    target_compile_options("${filenamewe}.${library_project_name}.gtest" PRIVATE -g -O0 --coverage -fprofile-arcs -ftest-coverage -fno-inline -fno-inline-small-functions -fno-default-inline)
+    target_compile_options("${filenamewe}.${library_project_name}.gtest" PRIVATE -g -O0 --coverage -fprofile-arcs -ftest-coverage -fno-inline -fno-inline-small-functions -fno-default-inline -fno-elide-constructors)
     target_link_libraries("${filenamewe}.${library_project_name}.gtest" gcov)
     add_test(NAME "${filenamewe}.${library_project_name}.gtest" COMMAND "$<TARGET_FILE:${filenamewe}.${library_project_name}.gtest>")
     if(BUILD_COVERAGE)

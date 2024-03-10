@@ -23,8 +23,8 @@
  * SOFTWARE.
  */
 
-#ifndef BLETDICT_H__
-#define BLETDICT_H__
+#ifndef BLET_DICT_H_
+#define BLET_DICT_H_
 
 #include <deque>     // std::deque
 #include <exception> // std::exception
@@ -5674,19 +5674,17 @@ class Dict {
     operator std::deque<T>() const {
         std::deque<T> ret;
         switch (type_) {
-            case ARRAY_TYPE: {
+            case ARRAY_TYPE:
                 for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
                     ret.push_back(value_.getArray()[i]);
                 }
                 break;
-            }
-            case OBJECT_TYPE: {
+            case OBJECT_TYPE:
                 for (object_t::const_iterator it = value_.getObject().begin(); it != value_.getObject().end(); ++it) {
                     ret.push_back(it->second);
                 }
                 break;
-            }
-            default:
+             default:
                 break;
         }
         return ret;
@@ -5901,4 +5899,4 @@ class Dict {
 
 } // namespace blet
 
-#endif // BLETDICT_H__
+#endif // BLET_DICT_H_
