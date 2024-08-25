@@ -2,7 +2,7 @@
  * dict.h
  *
  * Licensed under the MIT License <http://opensource.org/licenses/MIT>.
- * Copyright (c) 2023 BLET Mickaël.
+ * Copyright (c) 2024 BLET Mickaël.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -622,13 +622,13 @@ class Dict {
     };
 
     // -------------------------------------------------------------------------
-    // ................................
-    // .#####....####...######..##..##.
-    // .##..##..##..##....##....##..##.
-    // .#####...######....##....######.
-    // .##......##..##....##....##..##.
-    // .##......##..##....##....##..##.
-    // ................................
+    //  ................................
+    //  .#####....####...######..##..##.
+    //  .##..##..##..##....##....##..##.
+    //  .#####...######....##....######.
+    //  .##......##..##....##....##..##.
+    //  .##......##..##....##....##..##.
+    //  ................................
     // -------------------------------------------------------------------------
 
     /**
@@ -649,13 +649,13 @@ class Dict {
     };
 
     // -------------------------------------------------------------------------
-    // ................................................
-    // ..####...######...####...######..######...####..
-    // .##........##....##..##....##......##....##..##.
-    // ..####.....##....######....##......##....##.....
-    // .....##....##....##..##....##......##....##..##.
-    // ..####.....##....##..##....##....######...####..
-    // ................................................
+    //  ................................................
+    //  ..####...######...####...######..######...####..
+    //  .##........##....##..##....##......##....##..##.
+    //  ..####.....##....######....##......##....##.....
+    //  .....##....##....##..##....##......##....##..##.
+    //  ..####.....##....##..##....##....######...####..
+    //  ................................................
     // -------------------------------------------------------------------------
 
     /**
@@ -690,13 +690,13 @@ class Dict {
     }
 
     // -------------------------------------------------------------------------
-    // ................................................
-    // .######..#####...######..######..##..##..#####..
-    // .##......##..##....##....##......###.##..##..##.
-    // .####....#####.....##....####....##.###..##..##.
-    // .##......##..##....##....##......##..##..##..##.
-    // .##......##..##..######..######..##..##..#####..
-    // ................................................
+    //  ................................................
+    //  .######..#####...######..######..##..##..#####..
+    //  .##......##..##....##....##......###.##..##..##.
+    //  .####....#####.....##....####....##.###..##..##.
+    //  .##......##..##....##....##......##..##..##..##.
+    //  .##......##..##..######..######..##..##..#####..
+    //  ................................................
     // -------------------------------------------------------------------------
 
     /**
@@ -731,13 +731,13 @@ class Dict {
     }
 
     // -------------------------------------------------------------------------
-    // ................................
-    // .#####...######...####...######.
-    // .##..##....##....##..##....##...
-    // .##..##....##....##........##...
-    // .##..##....##....##..##....##...
-    // .#####...######...####.....##...
-    // ................................
+    //  ................................
+    //  .#####...######...####...######.
+    //  .##..##....##....##..##....##...
+    //  .##..##....##....##........##...
+    //  .##..##....##....##..##....##...
+    //  .#####...######...####.....##...
+    //  ................................
     // -------------------------------------------------------------------------
 
     /**
@@ -1203,7 +1203,7 @@ class Dict {
      * @return True if dict is boolean and with value are equal.
      */
     bool operator==(const boolean_t& value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -1237,7 +1237,7 @@ class Dict {
      * value.
      */
     bool operator>(const boolean_t& value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -1260,7 +1260,7 @@ class Dict {
      * @return True if dict is boolean and is lexicographically less than value.
      */
     bool operator<(const boolean_t& value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -1284,7 +1284,7 @@ class Dict {
      * than value.
      */
     bool operator>=(const boolean_t& value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -1308,7 +1308,7 @@ class Dict {
      * value.
      */
     bool operator<=(const boolean_t& value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -1437,7 +1437,7 @@ class Dict {
      */
     template<typename T>
     bool operator==(const T& value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case BOOLEAN_TYPE:
@@ -1473,7 +1473,7 @@ class Dict {
      */
     template<typename T>
     bool operator>(const T& value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
@@ -1497,7 +1497,7 @@ class Dict {
      */
     template<typename T>
     bool operator<(const T& value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
@@ -1522,7 +1522,7 @@ class Dict {
      */
     template<typename T>
     bool operator>=(const T& value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
@@ -1547,7 +1547,7 @@ class Dict {
      */
     template<typename T>
     bool operator<=(const T& value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case ARRAY_TYPE:
@@ -3108,7 +3108,7 @@ class Dict {
      * @return True if the value and the dict are equal.
      */
     bool operator==(const std::string& value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -3131,7 +3131,7 @@ class Dict {
      * @return True if the value and the dict are equal.
      */
     bool operator==(const char* value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -3156,7 +3156,7 @@ class Dict {
      */
     template<std::size_t Size>
     bool operator==(const char (&value)[Size]) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -3211,7 +3211,7 @@ class Dict {
      * @return True if dict is string and is lexicographically greater than value.
      */
     bool operator>(const std::string& value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -3234,7 +3234,7 @@ class Dict {
      * @return True if dict is string and is lexicographically greater than value.
      */
     bool operator>(const char* value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -3259,7 +3259,7 @@ class Dict {
      */
     template<std::size_t Size>
     bool operator>(const char (&value)[Size]) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -3282,7 +3282,7 @@ class Dict {
      * @return True if dict is string and is lexicographically less than value.
      */
     bool operator<(const std::string& value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -3305,7 +3305,7 @@ class Dict {
      * @return True if dict is string and is lexicographically less than value.
      */
     bool operator<(const char* value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -3330,7 +3330,7 @@ class Dict {
      */
     template<std::size_t Size>
     bool operator<(const char (&value)[Size]) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -3354,7 +3354,7 @@ class Dict {
      * than value.
      */
     bool operator>=(const std::string& value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -3378,7 +3378,7 @@ class Dict {
      * than value.
      */
     bool operator>=(const char* value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -3404,7 +3404,7 @@ class Dict {
      */
     template<std::size_t Size>
     bool operator>=(const char (&value)[Size]) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -3428,7 +3428,7 @@ class Dict {
      * value.
      */
     bool operator<=(const std::string& value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -3452,7 +3452,7 @@ class Dict {
      * value.
      */
     bool operator<=(const char* value) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -3478,7 +3478,7 @@ class Dict {
      */
     template<std::size_t Size>
     bool operator<=(const char (&value)[Size]) const {
-        bool ret;
+        bool ret = false;
         switch (type_) {
             case NULL_TYPE:
             case NUMBER_TYPE:
@@ -4875,7 +4875,7 @@ class Dict {
      * @return std::size_t
      */
     std::size_t capacity() const {
-        std::size_t ret;
+        std::size_t ret = 0;
         switch (type_) {
             case NULL_TYPE:
             case BOOLEAN_TYPE:
@@ -4975,7 +4975,7 @@ class Dict {
      * @brief Return true if the %string or %vector or %map is empty.
      */
     bool empty() const {
-        bool ret;
+        bool ret = true;
         switch (type_) {
             case NULL_TYPE:
             case BOOLEAN_TYPE:
@@ -5000,7 +5000,7 @@ class Dict {
      * %map.
      */
     std::size_t max_size() const {
-        std::size_t ret;
+        std::size_t ret = 0;
         switch (type_) {
             case NULL_TYPE:
             case BOOLEAN_TYPE:
@@ -5080,7 +5080,7 @@ class Dict {
      * @brief Returns the number of elements in the %string or %vector or %map.
      */
     std::size_t size() const {
-        std::size_t ret;
+        std::size_t ret = 0;
         switch (type_) {
             case NULL_TYPE:
             case BOOLEAN_TYPE:
@@ -5107,7 +5107,7 @@ class Dict {
      * @return true if the value and the dict are equal.
      */
     bool operator==(const Dict& value) const {
-        bool ret;
+        bool ret = false;
         if (type_ == value.type_) {
             switch (type_) {
                 case NULL_TYPE:
@@ -5130,9 +5130,6 @@ class Dict {
                     break;
             }
         }
-        else {
-            ret = false;
-        }
         return ret;
     }
 
@@ -5153,7 +5150,7 @@ class Dict {
      * @return True if dict is lexicographically greater than value.
      */
     bool operator>(const Dict& value) const {
-        bool ret;
+        bool ret = false;
         if (type_ == value.type_) {
             switch (type_) {
                 case NULL_TYPE:
@@ -5176,9 +5173,6 @@ class Dict {
                     break;
             }
         }
-        else {
-            ret = false;
-        }
         return ret;
     }
 
@@ -5189,7 +5183,7 @@ class Dict {
      * @return True if dict is lexicographically less than value.
      */
     bool operator<(const Dict& value) const {
-        bool ret;
+        bool ret = false;
         if (type_ == value.type_) {
             switch (type_) {
                 case NULL_TYPE:
@@ -5212,9 +5206,6 @@ class Dict {
                     break;
             }
         }
-        else {
-            ret = false;
-        }
         return ret;
     }
 
@@ -5225,7 +5216,7 @@ class Dict {
      * @return True if dict is lexicographically greater or equal than value.
      */
     bool operator>=(const Dict& value) const {
-        bool ret;
+        bool ret = false;
         if (type_ == value.type_) {
             switch (type_) {
                 case NULL_TYPE:
@@ -5248,9 +5239,6 @@ class Dict {
                     break;
             }
         }
-        else {
-            ret = false;
-        }
         return ret;
     }
 
@@ -5261,7 +5249,7 @@ class Dict {
      * @return True if dict is lexicographically less or equal than value.
      */
     bool operator<=(const Dict& value) const {
-        bool ret;
+        bool ret = false;
         if (type_ == value.type_) {
             switch (type_) {
                 case NULL_TYPE:
@@ -5283,9 +5271,6 @@ class Dict {
                     ret = value_.getObject() <= value.value_.getObject();
                     break;
             }
-        }
-        else {
-            ret = false;
         }
         return ret;
     }
@@ -5674,6 +5659,11 @@ class Dict {
     operator std::deque<T>() const {
         std::deque<T> ret;
         switch (type_) {
+            case NULL_TYPE:
+            case NUMBER_TYPE:
+            case BOOLEAN_TYPE:
+            case STRING_TYPE:
+                break;
             case ARRAY_TYPE:
                 for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
                     ret.push_back(value_.getArray()[i]);
@@ -5683,8 +5673,6 @@ class Dict {
                 for (object_t::const_iterator it = value_.getObject().begin(); it != value_.getObject().end(); ++it) {
                     ret.push_back(it->second);
                 }
-                break;
-             default:
                 break;
         }
         return ret;
@@ -5699,6 +5687,11 @@ class Dict {
     operator std::list<T>() const {
         std::list<T> ret;
         switch (type_) {
+            case NULL_TYPE:
+            case NUMBER_TYPE:
+            case BOOLEAN_TYPE:
+            case STRING_TYPE:
+                break;
             case ARRAY_TYPE:
                 for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
                     ret.push_back(value_.getArray()[i]);
@@ -5708,8 +5701,6 @@ class Dict {
                 for (object_t::const_iterator it = value_.getObject().begin(); it != value_.getObject().end(); ++it) {
                     ret.push_back(it->second);
                 }
-                break;
-            default:
                 break;
         }
         return ret;
@@ -5758,6 +5749,11 @@ class Dict {
     operator std::queue<T>() const {
         std::queue<T> ret;
         switch (type_) {
+            case NULL_TYPE:
+            case NUMBER_TYPE:
+            case BOOLEAN_TYPE:
+            case STRING_TYPE:
+                break;
             case ARRAY_TYPE:
                 for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
                     ret.push(value_.getArray()[i]);
@@ -5767,8 +5763,6 @@ class Dict {
                 for (object_t::const_iterator it = value_.getObject().begin(); it != value_.getObject().end(); ++it) {
                     ret.push(it->second);
                 }
-                break;
-            default:
                 break;
         }
         return ret;
@@ -5783,6 +5777,11 @@ class Dict {
     operator std::set<T>() const {
         std::set<T> ret;
         switch (type_) {
+            case NULL_TYPE:
+            case NUMBER_TYPE:
+            case BOOLEAN_TYPE:
+            case STRING_TYPE:
+                break;
             case ARRAY_TYPE:
                 for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
                     ret.insert(static_cast<T>(value_.getArray()[i]));
@@ -5792,8 +5791,6 @@ class Dict {
                 for (object_t::const_iterator it = value_.getObject().begin(); it != value_.getObject().end(); ++it) {
                     ret.insert(static_cast<T>(it->second));
                 }
-                break;
-            default:
                 break;
         }
         return ret;
@@ -5808,6 +5805,11 @@ class Dict {
     operator std::stack<T>() const {
         std::stack<T> ret;
         switch (type_) {
+            case NULL_TYPE:
+            case NUMBER_TYPE:
+            case BOOLEAN_TYPE:
+            case STRING_TYPE:
+                break;
             case ARRAY_TYPE:
                 for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
                     ret.push(value_.getArray()[i]);
@@ -5817,8 +5819,6 @@ class Dict {
                 for (object_t::const_iterator it = value_.getObject().begin(); it != value_.getObject().end(); ++it) {
                     ret.push(it->second);
                 }
-                break;
-            default:
                 break;
         }
         return ret;
@@ -5833,6 +5833,11 @@ class Dict {
     operator std::vector<T>() const {
         std::vector<T> ret;
         switch (type_) {
+            case NULL_TYPE:
+            case NUMBER_TYPE:
+            case BOOLEAN_TYPE:
+            case STRING_TYPE:
+                break;
             case ARRAY_TYPE:
                 ret.reserve(value_.getArray().size());
                 for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
@@ -5844,8 +5849,6 @@ class Dict {
                 for (object_t::const_iterator it = value_.getObject().begin(); it != value_.getObject().end(); ++it) {
                     ret.push_back(it->second);
                 }
-                break;
-            default:
                 break;
         }
         return ret;
