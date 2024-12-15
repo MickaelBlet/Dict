@@ -470,7 +470,7 @@ GTEST_TEST(dict_array, insert) {
     }
     {
         blet::Dict dict(v);
-        dict.insert(dict.array_begin() + 1, 5, 42);
+        dict.insert(dict.array_begin() + 1, 5, blet::Dict(42));
         EXPECT_EQ(dict.size(), 9);
     }
     {

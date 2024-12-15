@@ -900,6 +900,7 @@ GTEST_TEST(dict_common, get) {
 }
 
 GTEST_TEST(dict_common, containerCast) {
+    std::string s("foobar");
     std::vector<int> v;
     v.push_back(42);
     v.push_back(24);
@@ -908,6 +909,36 @@ GTEST_TEST(dict_common, containerCast) {
     m.insert(std::map<std::string, int>::value_type("foo", 42));
     m.insert(std::map<std::string, int>::value_type("bar", 24));
     m.insert(std::map<std::string, int>::value_type("toto", 1337));
+    // deque
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict(false);
+                    std::deque<double> dq = dict;
+                }
+                catch (const blet::Dict::MethodException& e) {
+                    EXPECT_STREQ(e.what(), "has not a method operator std::deque.");
+                    throw;
+                }
+            },
+            blet::Dict::MethodException);
+    }
+    {
+        blet::Dict dict(s);
+        std::deque<char> dq = dict;
+        EXPECT_EQ(dq.front(), 'f');
+        dq.pop_front();
+        EXPECT_EQ(dq.front(), 'o');
+        dq.pop_front();
+        EXPECT_EQ(dq.front(), 'o');
+        dq.pop_front();
+        EXPECT_EQ(dq.front(), 'b');
+        dq.pop_front();
+        EXPECT_EQ(dq.front(), 'a');
+        dq.pop_front();
+        EXPECT_EQ(dq.front(), 'r');
+    }
     {
         blet::Dict dict(v);
         std::deque<double> dq = dict;
@@ -926,10 +957,35 @@ GTEST_TEST(dict_common, containerCast) {
         dq.pop_front();
         EXPECT_EQ(dq.front(), 1337);
     }
+    // list
     {
-        blet::Dict dict(false);
-        std::deque<double> dq = dict;
-        EXPECT_EQ(dq.empty(), true);
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict(false);
+                    std::list<double> dq = dict;
+                }
+                catch (const blet::Dict::MethodException& e) {
+                    EXPECT_STREQ(e.what(), "has not a method operator std::list.");
+                    throw;
+                }
+            },
+            blet::Dict::MethodException);
+    }
+    {
+        blet::Dict dict(s);
+        std::list<char> l = dict;
+        EXPECT_EQ(l.front(), 'f');
+        l.pop_front();
+        EXPECT_EQ(l.front(), 'o');
+        l.pop_front();
+        EXPECT_EQ(l.front(), 'o');
+        l.pop_front();
+        EXPECT_EQ(l.front(), 'b');
+        l.pop_front();
+        EXPECT_EQ(l.front(), 'a');
+        l.pop_front();
+        EXPECT_EQ(l.front(), 'r');
     }
     {
         blet::Dict dict(v);
@@ -949,10 +1005,46 @@ GTEST_TEST(dict_common, containerCast) {
         l.pop_front();
         EXPECT_EQ(l.front(), 1337);
     }
+    // map
     {
-        blet::Dict dict(false);
-        std::list<double> l = dict;
-        EXPECT_EQ(l.empty(), true);
+        typedef std::map<double, double> map_t;
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict(false);
+                    map_t mp = dict;
+                }
+                catch (const blet::Dict::MethodException& e) {
+                    EXPECT_STREQ(e.what(), "has not a method operator std::map.");
+                    throw;
+                }
+            },
+            blet::Dict::MethodException);
+    }
+    {
+        typedef std::map<std::string, double> map_t;
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict(false);
+                    map_t mp = dict;
+                }
+                catch (const blet::Dict::MethodException& e) {
+                    EXPECT_STREQ(e.what(), "has not a method operator std::map.");
+                    throw;
+                }
+            },
+            blet::Dict::MethodException);
+    }
+    {
+        blet::Dict dict(s);
+        std::map<double, char> mp = dict;
+        EXPECT_EQ(mp.at(0), 'f');
+        EXPECT_EQ(mp.at(1), 'o');
+        EXPECT_EQ(mp.at(2), 'o');
+        EXPECT_EQ(mp.at(3), 'b');
+        EXPECT_EQ(mp.at(4), 'a');
+        EXPECT_EQ(mp.at(5), 'r');
     }
     {
         blet::Dict dict(v);
@@ -968,6 +1060,36 @@ GTEST_TEST(dict_common, containerCast) {
         EXPECT_EQ(mp.at("bar"), 24);
         EXPECT_EQ(mp.at("toto"), 1337);
     }
+    // queue
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict(false);
+                    std::queue<double> q = dict;
+                }
+                catch (const blet::Dict::MethodException& e) {
+                    EXPECT_STREQ(e.what(), "has not a method operator std::queue.");
+                    throw;
+                }
+            },
+            blet::Dict::MethodException);
+    }
+    {
+        blet::Dict dict(s);
+        std::queue<char> q = dict;
+        EXPECT_EQ(q.front(), 'f');
+        q.pop();
+        EXPECT_EQ(q.front(), 'o');
+        q.pop();
+        EXPECT_EQ(q.front(), 'o');
+        q.pop();
+        EXPECT_EQ(q.front(), 'b');
+        q.pop();
+        EXPECT_EQ(q.front(), 'a');
+        q.pop();
+        EXPECT_EQ(q.front(), 'r');
+    }
     {
         blet::Dict dict(v);
         std::queue<double> q = dict;
@@ -986,52 +1108,116 @@ GTEST_TEST(dict_common, containerCast) {
         q.pop();
         EXPECT_EQ(q.front(), 1337);
     }
+    // set
     {
-        blet::Dict dict(false);
-        std::queue<double> q = dict;
-        EXPECT_EQ(q.empty(), true);
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict(false);
+                    std::set<double> s = dict;
+                }
+                catch (const blet::Dict::MethodException& e) {
+                    EXPECT_STREQ(e.what(), "has not a method operator std::set.");
+                    throw;
+                }
+            },
+            blet::Dict::MethodException);
+    }
+    {
+        blet::Dict dict(s);
+        std::set<char> st = dict;
+        EXPECT_NE(st.find('f'), st.end());
+        EXPECT_NE(st.find('o'), st.end());
+        EXPECT_NE(st.find('b'), st.end());
+        EXPECT_NE(st.find('a'), st.end());
+        EXPECT_NE(st.find('r'), st.end());
     }
     {
         blet::Dict dict(v);
-        std::set<double> s = dict;
-        EXPECT_NE(s.find(42), s.end());
-        EXPECT_NE(s.find(24), s.end());
-        EXPECT_NE(s.find(1337), s.end());
+        std::set<double> st = dict;
+        EXPECT_NE(st.find(42), st.end());
+        EXPECT_NE(st.find(24), st.end());
+        EXPECT_NE(st.find(1337), st.end());
     }
     {
         blet::Dict dict(m);
-        std::set<double> s = dict;
-        EXPECT_NE(s.find(42), s.end());
-        EXPECT_NE(s.find(24), s.end());
-        EXPECT_NE(s.find(1337), s.end());
+        std::set<double> st = dict;
+        EXPECT_NE(st.find(42), st.end());
+        EXPECT_NE(st.find(24), st.end());
+        EXPECT_NE(st.find(1337), st.end());
+    }
+    // stack
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict(false);
+                    std::stack<double> s = dict;
+                }
+                catch (const blet::Dict::MethodException& e) {
+                    EXPECT_STREQ(e.what(), "has not a method operator std::stack.");
+                    throw;
+                }
+            },
+            blet::Dict::MethodException);
     }
     {
-        blet::Dict dict(false);
-        std::set<double> s = dict;
-        EXPECT_EQ(s.empty(), true);
+        blet::Dict dict(s);
+        std::stack<char> st = dict;
+        EXPECT_EQ(st.top(), 'r');
+        st.pop();
+        EXPECT_EQ(st.top(), 'a');
+        st.pop();
+        EXPECT_EQ(st.top(), 'b');
+        st.pop();
+        EXPECT_EQ(st.top(), 'o');
+        st.pop();
+        EXPECT_EQ(st.top(), 'o');
+        st.pop();
+        EXPECT_EQ(st.top(), 'f');
     }
     {
         blet::Dict dict(v);
-        std::stack<double> s = dict;
-        EXPECT_EQ(s.top(), 1337);
-        s.pop();
-        EXPECT_EQ(s.top(), 24);
-        s.pop();
-        EXPECT_EQ(s.top(), 42);
+        std::stack<double> st = dict;
+        EXPECT_EQ(st.top(), 1337);
+        st.pop();
+        EXPECT_EQ(st.top(), 24);
+        st.pop();
+        EXPECT_EQ(st.top(), 42);
     }
     {
         blet::Dict dict(m);
-        std::stack<double> s = dict;
-        EXPECT_EQ(s.top(), 1337);
-        s.pop();
-        EXPECT_EQ(s.top(), 42);
-        s.pop();
-        EXPECT_EQ(s.top(), 24);
+        std::stack<double> st = dict;
+        EXPECT_EQ(st.top(), 1337);
+        st.pop();
+        EXPECT_EQ(st.top(), 42);
+        st.pop();
+        EXPECT_EQ(st.top(), 24);
+    }
+    // vector
+    {
+        EXPECT_THROW(
+            {
+                try {
+                    blet::Dict dict(false);
+                    std::vector<double> s = dict;
+                }
+                catch (const blet::Dict::MethodException& e) {
+                    EXPECT_STREQ(e.what(), "has not a method operator std::vector.");
+                    throw;
+                }
+            },
+            blet::Dict::MethodException);
     }
     {
-        blet::Dict dict(false);
-        std::stack<double> s = dict;
-        EXPECT_EQ(s.empty(), true);
+        blet::Dict dict(s);
+        std::vector<char> vc = dict;
+        EXPECT_EQ(vc[0], 'f');
+        EXPECT_EQ(vc[1], 'o');
+        EXPECT_EQ(vc[2], 'o');
+        EXPECT_EQ(vc[3], 'b');
+        EXPECT_EQ(vc[4], 'a');
+        EXPECT_EQ(vc[5], 'r');
     }
     {
         blet::Dict dict(v);
@@ -1046,10 +1232,5 @@ GTEST_TEST(dict_common, containerCast) {
         EXPECT_EQ(vc[0], 24);
         EXPECT_EQ(vc[1], 42);
         EXPECT_EQ(vc[2], 1337);
-    }
-    {
-        blet::Dict dict(false);
-        std::vector<double> vc = dict;
-        EXPECT_EQ(vc.empty(), true);
     }
 }

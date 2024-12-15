@@ -556,7 +556,7 @@ class Dict {
         }
 
         /**
-         * @brief Construct a new Child Exception object
+         * @brief Construct a new Child Exception object.
          *
          * @param dict A dictionnary.
          * @param key A key.
@@ -595,7 +595,7 @@ class Dict {
     };
 
     /**
-     * @brief Method exception from AccessException
+     * @brief Method exception from AccessException.
      */
     class MethodException : public AccessException {
       public:
@@ -644,10 +644,11 @@ class Dict {
      */
     struct Path : public std::list<Dict> {
         /**
-         * @brief Add @p index in path
+         * @brief Add @p index in path.
          *
-         * @param index
-         * @return Path& current Path
+         * @tparam T Type of index.
+         * @param index Index of search.
+         * @return Path& current Path.
          */
         template<typename T>
         Path& operator[](const T& index) {
@@ -5657,9 +5658,9 @@ class Dict {
     }
 
     /**
-     * @brief Get the @p T of dict object
+     * @brief Get the @p T of dict object.
      *
-     * @tparam T Type of ret
+     * @tparam T Type of ret.
      * @param ret
      */
     template<typename T>
@@ -5668,9 +5669,10 @@ class Dict {
     }
 
     /**
-     * @brief Get dict to deque
+     * @brief Get dict to deque.
      *
-     * @tparam T
+     * @tparam T Type of deque value.
+     * @throw MethodException if dict type is not a string and not a array and not a object.
      */
     template<typename T>
     operator std::deque<T>() const {
@@ -5679,7 +5681,12 @@ class Dict {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case BOOLEAN_TYPE:
+                throw MethodException(*this, "operator std::deque");
+                break;
             case STRING_TYPE:
+                for (std::size_t i = 0; i < value_.getString().size(); ++i) {
+                    ret.push_back(value_.getString()[i]);
+                }
                 break;
             case ARRAY_TYPE:
                 for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
@@ -5696,9 +5703,10 @@ class Dict {
     }
 
     /**
-     * @brief Get dict to list
+     * @brief Get dict to list.
      *
-     * @tparam T
+     * @tparam T Type of list value.
+     * @throw MethodException if dict type is not a string and not a array and not a object.
      */
     template<typename T>
     operator std::list<T>() const {
@@ -5707,7 +5715,12 @@ class Dict {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case BOOLEAN_TYPE:
+                throw MethodException(*this, "operator std::list");
+                break;
             case STRING_TYPE:
+                for (std::size_t i = 0; i < value_.getString().size(); ++i) {
+                    ret.push_back(value_.getString()[i]);
+                }
                 break;
             case ARRAY_TYPE:
                 for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
@@ -5724,10 +5737,10 @@ class Dict {
     }
 
     /**
-     * @brief Get dict to map
+     * @brief Get dict to map.
      *
-     * @tparam T
-     * @return std::map<std::string, T>
+     * @tparam T Type of map value.
+     * @throw MethodException if dict type is not a object.
      */
     template<typename T>
     operator std::map<std::string, T>() const {
@@ -5737,30 +5750,42 @@ class Dict {
                 ret.insert(std::pair<std::string, T>(it->first, it->second));
             }
         }
-        return ret;
-    }
-
-    /**
-     * @brief Get dict to map
-     *
-     * @tparam T key
-     * @tparam U value
-     */
-    template<typename T, typename U>
-    operator std::map<T, U>() const {
-        std::map<T, U> ret;
-        if (isArray()) {
-            for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
-                ret.insert(std::pair<T, U>(i, value_.getArray()[i]));
-            }
+        else {
+            throw MethodException(*this, "operator std::map");
         }
         return ret;
     }
 
     /**
-     * @brief Get dict to queue
+     * @brief Get dict to map.
      *
-     * @tparam T
+     * @tparam T Type of map key.
+     * @tparam U Type of map value.
+     * @throw MethodException if dict type is not a string and not a array.
+     */
+    template<typename T, typename U>
+    operator std::map<T, U>() const {
+        std::map<T, U> ret;
+        if (isString()) {
+            for (std::size_t i = 0; i < value_.getString().size(); ++i) {
+                ret.insert(std::pair<T, U>(i, value_.getString()[i]));
+            }
+        }
+        else if (isArray()) {
+            for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
+                ret.insert(std::pair<T, U>(i, value_.getArray()[i]));
+            }
+        }
+        else {
+            throw MethodException(*this, "operator std::map");
+        }
+        return ret;
+    }
+
+    /**
+     * @brief Get dict to queue.
+     *
+     * @tparam T Type of queue value.
      */
     template<typename T>
     operator std::queue<T>() const {
@@ -5769,7 +5794,12 @@ class Dict {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case BOOLEAN_TYPE:
+                throw MethodException(*this, "operator std::queue");
+                break;
             case STRING_TYPE:
+                for (std::size_t i = 0; i < value_.getString().size(); ++i) {
+                    ret.push(value_.getString()[i]);
+                }
                 break;
             case ARRAY_TYPE:
                 for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
@@ -5786,9 +5816,9 @@ class Dict {
     }
 
     /**
-     * @brief Get dict to set
+     * @brief Get dict to set.
      *
-     * @tparam T
+     * @tparam T Type of set value.
      */
     template<typename T>
     operator std::set<T>() const {
@@ -5797,7 +5827,12 @@ class Dict {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case BOOLEAN_TYPE:
+                throw MethodException(*this, "operator std::set");
+                break;
             case STRING_TYPE:
+                for (std::size_t i = 0; i < value_.getString().size(); ++i) {
+                    ret.insert(static_cast<T>(value_.getString()[i]));
+                }
                 break;
             case ARRAY_TYPE:
                 for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
@@ -5814,9 +5849,9 @@ class Dict {
     }
 
     /**
-     * @brief Get dict to stack
+     * @brief Get dict to stack.
      *
-     * @tparam T
+     * @tparam T Type of stack value.
      */
     template<typename T>
     operator std::stack<T>() const {
@@ -5825,7 +5860,12 @@ class Dict {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case BOOLEAN_TYPE:
+                throw MethodException(*this, "operator std::stack");
+                break;
             case STRING_TYPE:
+                for (std::size_t i = 0; i < value_.getString().size(); ++i) {
+                    ret.push(value_.getString()[i]);
+                }
                 break;
             case ARRAY_TYPE:
                 for (std::size_t i = 0; i < value_.getArray().size(); ++i) {
@@ -5842,9 +5882,9 @@ class Dict {
     }
 
     /**
-     * @brief Get dict to vector
+     * @brief Get dict to vector.
      *
-     * @tparam T
+     * @tparam T Type of vector value.
      */
     template<typename T>
     operator std::vector<T>() const {
@@ -5853,7 +5893,13 @@ class Dict {
             case NULL_TYPE:
             case NUMBER_TYPE:
             case BOOLEAN_TYPE:
+                throw MethodException(*this, "operator std::vector");
+                break;
             case STRING_TYPE:
+                ret.reserve(value_.getString().size());
+                for (std::size_t i = 0; i < value_.getString().size(); ++i) {
+                    ret.push_back(value_.getString()[i]);
+                }
                 break;
             case ARRAY_TYPE:
                 ret.reserve(value_.getArray().size());
