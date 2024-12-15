@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(blet_dict VERSION 1.0.1 LANGUAGES CXX)
+project(blet_dict VERSION 1.0.2 LANGUAGES CXX)
 
 # options
 option(BUILD_EXAMPLE "Build example binaries" OFF)
