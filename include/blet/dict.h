@@ -949,6 +949,27 @@ class Dict {
         if (&dict == this) {
             return *this;
         }
+        // Optimize same-type assignments to reuse existing allocation
+        if (type_ == dict.type_) {
+            switch (type_) {
+                case NULL_TYPE:
+                    break;
+                case BOOLEAN_TYPE:
+                case NUMBER_TYPE:
+                    value_ = dict.value_;
+                    break;
+                case STRING_TYPE:
+                    value_.getString() = dict.value_.getString();
+                    break;
+                case ARRAY_TYPE:
+                    value_.getArray() = dict.value_.getArray();
+                    break;
+                case OBJECT_TYPE:
+                    value_.getObject() = dict.value_.getObject();
+                    break;
+            }
+            return *this;
+        }
         clear();
         switch (dict.type_) {
             case NULL_TYPE:
